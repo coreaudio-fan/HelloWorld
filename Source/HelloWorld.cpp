@@ -21,9 +21,9 @@ namespace
 // -----------------------------------------------------------------------
 struct Student
 {
-	int32_t		m_id    = 0;
-	std::string	m_name  = {};
-	double		m_score = 0.0;
+	int32_t		m_id	= 0;
+	std::string	m_name	= {};
+	double		m_score	= 0.0;
 };
 
 // -----------------------------------------------------------------------
@@ -98,7 +98,7 @@ public:
 	}
 
 private:
-	std::vector<Student>				m_students;
+	std::vector<Student>					m_students;
 	std::function<void(const Student &)>	m_on_student_added;
 };
 
@@ -130,10 +130,10 @@ void	run_demo_cpp(void)
 	});
 
 	book.add_student(1, "Alice",	92.5);
-	book.add_student(2, "Bob",	78.0);
+	book.add_student(2, "Bob",		78.0);
 	book.add_student(3, "Carol",	85.5);
-	book.add_student(4, "Dave",	61.0);
-	book.add_student(5, "Eve",	97.0);
+	book.add_student(4, "Dave",		61.0);
+	book.add_student(5, "Eve",		97.0);
 
 	std::cout << "\nAll students:\n";
 	book.for_each([](const Student &s)

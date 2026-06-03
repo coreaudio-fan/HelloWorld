@@ -86,8 +86,8 @@ static int32_t	add_student(int32_t id, const char *name, float score)
 		return DEMO_C_ERR_INVALID;
 
 	Student *s = &s_students[s_count++];
-	s->m_id    = id;
-	s->m_score = score;
+	s->m_id		= id;
+	s->m_score	= score;
 	strncpy(s->m_name, name, DEMO_C_NAME_LEN - 1);
 	s->m_name[DEMO_C_NAME_LEN - 1] = '\0';
 
