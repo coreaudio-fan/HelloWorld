@@ -1,0 +1,9 @@
+// HelloWorld target — Debug configuration.
+
+PRODUCT_NAME = $(TARGET_NAME)
+SWIFT_OBJC_BRIDGING_HEADER = Source/HelloWorld-Bridging-Header.h
+SWIFT_VERSION = 5.0
+
+// Target-level Debug flag, distinct from the project-level DEBUG.
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) HELLOWORLD_DEBUG=1
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) HELLOWORLD_DEBUG
