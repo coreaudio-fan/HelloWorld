@@ -45,6 +45,20 @@ Each language has a single source/header pair containing both its `hello_*` func
 | `HelloWorld.swift` | Swift: `helloSwift`, `runDemoSwift`; enums, `GradeBook` class, closures, `Result`, `@escaping` |
 | `HelloWorld-Bridging-Header.h` | Exposes C, C++, and Obj-C entry points to Swift |
 
+### Build settings (`Config/`)
+
+All Xcode build settings live in `.xcconfig` files under `Config/` rather than inline in `project.pbxproj`. The four `XCBuildConfiguration`s each have a `baseConfigurationReference` pointing to one of these files, and their inline `buildSettings` dicts are empty — every setting flows from a tracked text file.
+
+| File | Used by | Notes |
+|---|---|---|
+| `Config/Common.xcconfig` | (included by Debug/Release) | Settings shared by both project-level configurations: language standards, warning flags, deployment target, SDK |
+| `Config/Debug.xcconfig` | Project Debug | `#include "Common.xcconfig"`; Debug-only overrides (no optimization, `DEBUG=1`, testability, dwarf without dSYM) |
+| `Config/Release.xcconfig` | Project Release | `#include "Common.xcconfig"`; Release-only overrides (wholemodule, dwarf-with-dSYM, NS_ASSERTIONS off) |
+| `Config/HelloWorld-Debug.xcconfig` | HelloWorld target Debug | Target settings (`PRODUCT_NAME`, `SWIFT_OBJC_BRIDGING_HEADER`, `SWIFT_VERSION`) plus the target-level `HELLOWORLD_DEBUG` flag |
+| `Config/HelloWorld-Release.xcconfig` | HelloWorld target Release | Same target settings plus the target-level `HELLOWORLD_RELEASE` flag |
+
+When changing a build setting, edit the appropriate `.xcconfig` file rather than the project's "Build Settings" tab in Xcode — anything set in the UI gets written back as an inline override in `project.pbxproj` and shadows the xcconfig value.
+
 ### Note on C++ standard
 
 The Xcode project sets `CLANG_CXX_LANGUAGE_STANDARD = gnu++23`. The demo code uses `std::format` (C++20) and `std::optional` (C++17); both are available under `gnu++23` on recent Apple SDKs.
