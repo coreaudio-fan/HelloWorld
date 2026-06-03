@@ -13,9 +13,9 @@ typedef BOOL	(^HWStudentPredicate)(NSString *name, float score);
 
 // Private student model — used only inside this file
 @interface HWStudent : NSObject
-@property (nonatomic, assign) int32_t studentId;
-@property (nonatomic, copy)   NSString *name;
-@property (nonatomic, assign) float score;
+@property (nonatomic, assign)	int32_t		studentId;
+@property (nonatomic, copy)		NSString	*name;
+@property (nonatomic, assign)	float		score;
 - (instancetype)initWithId:(int32_t)studentId name:(NSString *)name score:(float)score;
 @end
 
@@ -24,9 +24,9 @@ typedef BOOL	(^HWStudentPredicate)(NSString *name, float score);
 - (instancetype)initWithId:(int32_t)studentId name:(NSString *)name score:(float)score {
 	self = [super init];
 	if (self) {
-		_studentId = studentId;
-		_name      = [name copy];
-		_score     = score;
+		_studentId	= studentId;
+		_name		= [name copy];
+		_score		= score;
 	}
 	return self;
 }
@@ -36,8 +36,8 @@ typedef BOOL	(^HWStudentPredicate)(NSString *name, float score);
 // Class prefix 'HW' follows the Objective-C convention of prefixing type names
 // to avoid collisions in the global namespace.
 @interface HWGradeBook : NSObject
-@property (nonatomic, copy, nullable) HWStudentBlock onStudentAdded;
-@property (nonatomic, strong) NSMutableArray<HWStudent *> *students;
+@property (nonatomic, copy, nullable)	HWStudentBlock				onStudentAdded;
+@property (nonatomic, strong)			NSMutableArray<HWStudent *>	*students;
 
 - (void)addStudentWithId:(int32_t)studentId
                     name:(NSString *)name
@@ -128,11 +128,11 @@ void	run_demo_objc(void) {
 		printf("  + Added: %s (%.1f)\n", name.UTF8String, score);
 	};
 
-	[book addStudentWithId:1 name:@"Alice" score:92.5f];
-	[book addStudentWithId:2 name:@"Bob"   score:78.0f];
-	[book addStudentWithId:3 name:@"Carol" score:85.5f];
-	[book addStudentWithId:4 name:@"Dave"  score:61.0f];
-	[book addStudentWithId:5 name:@"Eve"   score:97.0f];
+	[book addStudentWithId:1 name:@"Alice"	score:92.5f];
+	[book addStudentWithId:2 name:@"Bob"	score:78.0f];
+	[book addStudentWithId:3 name:@"Carol"	score:85.5f];
+	[book addStudentWithId:4 name:@"Dave"	score:61.0f];
+	[book addStudentWithId:5 name:@"Eve"	score:97.0f];
 
 	printf("\nAll students:\n");
 	[book enumerateStudentsUsingBlock:^(NSString *name, float score) {
@@ -164,8 +164,8 @@ void	run_demo_objc(void) {
 
 	// Dot notation vs message syntax — both compile; style guides disagree.
 	// Apple's own code mixes both; many teams pick one and enforce it.
-	float avg_dot     = book.averageScore;        // dot notation (property access style)
-	float avg_message = [book averageScore];       // message syntax (traditional Objective-C)
+	float avg_dot		= book.averageScore;        // dot notation (property access style)
+	float avg_message	= [book averageScore];       // message syntax (traditional Objective-C)
 	printf("\navg (dot): %.1f   avg (message): %.1f\n", avg_dot, avg_message);
 
 	// Factory class method
