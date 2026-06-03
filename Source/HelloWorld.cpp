@@ -35,10 +35,10 @@ public:
 	// Rule of 6: all six special member functions explicitly defined.
 	Grade_Book() = default;
 	~Grade_Book() = default;
-	Grade_Book(const Grade_Book &other) = default;
-	Grade_Book	&operator=(const Grade_Book &other) = default;
-	Grade_Book(Grade_Book &&other) = default;
-	Grade_Book	&operator=(Grade_Book &&other) = default;
+	Grade_Book(const Grade_Book& other) = default;
+	Grade_Book&	operator=(const Grade_Book& other) = default;
+	Grade_Book(Grade_Book&& other) = default;
+	Grade_Book&	operator=(Grade_Book&& other) = default;
 
 	// F.18: take name by value and move it to avoid an unnecessary copy
 	void	add_student(int32_t id, std::string name, double score)
@@ -49,7 +49,7 @@ public:
 	}
 
 	// Accepts any callable matching the signature — stored for later use
-	void	set_on_student_added(std::function<void(const Student &)> callback)
+	void	set_on_student_added(std::function<void(const Student&)> callback)
 	{
 		m_on_student_added = std::move(callback);
 	}
@@ -57,7 +57,7 @@ public:
 	[[nodiscard]] std::optional<Student>	find_student(int32_t id) const
 	{
 		auto it = std::find_if(m_students.begin(), m_students.end(),
-			[id](const Student &s) { return s.m_id == id; });
+			[id](const Student& s) { return s.m_id == id; });
 
 		if (it == m_students.end())
 			return std::nullopt;
@@ -71,18 +71,18 @@ public:
 			return 0.0;
 
 		double total = std::accumulate(m_students.begin(), m_students.end(), 0.0,
-			[](double sum, const Student &s) { return sum + s.m_score; });
+			[](double sum, const Student& s) { return sum + s.m_score; });
 
 		return total / static_cast<double>(m_students.size());
 	}
 
-	void	for_each(std::function<void(const Student &)> visitor) const
+	void	for_each(std::function<void(const Student&)> visitor) const
 	{
-		for (const auto &s : m_students)
+		for (const auto& s : m_students)
 			visitor(s);
 	}
 
-	[[nodiscard]] std::vector<Student>	filter(std::function<bool(const Student &)> predicate) const
+	[[nodiscard]] std::vector<Student>	filter(std::function<bool(const Student&)> predicate) const
 	{
 		std::vector<Student> result;
 		std::copy_if(m_students.begin(), m_students.end(),
@@ -90,7 +90,7 @@ public:
 		return result;
 	}
 
-	[[nodiscard]] std::vector<Student>	sorted_by(std::function<bool(const Student &, const Student &)> compare) const
+	[[nodiscard]] std::vector<Student>	sorted_by(std::function<bool(const Student&, const Student&)> compare) const
 	{
 		std::vector<Student> result = m_students;
 		std::sort(result.begin(), result.end(), compare);
@@ -99,15 +99,15 @@ public:
 
 private:
 	std::vector<Student>					m_students;
-	std::function<void(const Student &)>	m_on_student_added;
+	std::function<void(const Student&)>	m_on_student_added;
 };
 
 // Template function — prints any vector whose elements expose m_id, m_name, m_score.
 // A concept (C++20) could constrain T here; omitted to keep the example focused.
 template<typename T>
-void	print_collection(const std::vector<T> &items)
+void	print_collection(const std::vector<T>& items)
 {
-	for (const auto &item : items)
+	for (const auto& item : items)
 		std::cout << std::format("  [{:3d}]  {:<20s}  {:5.1f}\n",
 			item.m_id, item.m_name, item.m_score);
 }
@@ -124,7 +124,7 @@ void	run_demo_cpp(void)
 	Grade_Book book;
 
 	// Stored closure: fires each time a student is added
-	book.set_on_student_added([](const Student &s)
+	book.set_on_student_added([](const Student& s)
 	{
 		std::cout << std::format("  + Added: {}\n", s.m_name);
 	});
@@ -136,7 +136,7 @@ void	run_demo_cpp(void)
 	book.add_student(5, "Eve",		97.0);
 
 	std::cout << "\nAll students:\n";
-	book.for_each([](const Student &s)
+	book.for_each([](const Student& s)
 	{
 		std::cout << std::format("  [{:3d}]  {:<20s}  {:5.1f}\n",
 			s.m_id, s.m_name, s.m_score);
@@ -146,7 +146,7 @@ void	run_demo_cpp(void)
 
 	// Lambda capturing by value — safe because the lambda does not outlive threshold
 	double threshold = 80.0;
-	auto high_achievers = book.filter([threshold](const Student &s)
+	auto high_achievers = book.filter([threshold](const Student& s)
 	{
 		return s.m_score >= threshold;
 	});
@@ -154,7 +154,7 @@ void	run_demo_cpp(void)
 	print_collection(high_achievers);
 
 	// Comparator lambda passed to sorted_by
-	auto by_score_desc = book.sorted_by([](const Student &a, const Student &b)
+	auto by_score_desc = book.sorted_by([](const Student& a, const Student& b)
 	{
 		return a.m_score > b.m_score;
 	});
@@ -164,12 +164,12 @@ void	run_demo_cpp(void)
 	// Mutable lambda: captures a counter by value and mutates it across calls.
 	// Without 'mutable', modifying a captured-by-value variable is a compile error.
 	int32_t rank = 0;
-	auto print_ranked = [rank](const Student &s) mutable
+	auto print_ranked = [rank](const Student& s) mutable
 	{
 		std::cout << std::format("  #{}: {}\n", ++rank, s.m_name);
 	};
 	std::cout << "\nRanks (via mutable lambda):\n";
-	for (const auto &s : by_score_desc)
+	for (const auto& s : by_score_desc)
 		print_ranked(s);
 
 	// Immediately invoked lambda: computes a one-off value inline without
@@ -177,7 +177,7 @@ void	run_demo_cpp(void)
 	double top_score = [&book]()
 	{
 		double max_val = 0.0;
-		book.for_each([&max_val](const Student &s)
+		book.for_each([&max_val](const Student& s)
 		{
 			if (s.m_score > max_val)
 				max_val = s.m_score;
