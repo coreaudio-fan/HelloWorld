@@ -4,7 +4,7 @@ This project serves two purposes:
 
 1. **Cross-language interop demo** — a macOS command-line tool built with Xcode that demonstrates calling functions written in C, C++, Objective-C, and Swift from a shared Swift entry point.
 
-2. **Coding standards reference** — each language has a `Demo_*` module that exercises the constructs most relevant to the project's coding style rules, and deliberately includes the patterns that tend to generate the most debate about the "right" way to write them.
+2. **Coding standards reference** — each language's `HelloWorld.*` file exercises the constructs most relevant to the project's coding style rules, and deliberately includes the patterns that tend to generate the most debate about the "right" way to write them.
 
 ## Languages and constructs covered
 
