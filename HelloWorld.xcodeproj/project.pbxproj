@@ -12,10 +12,6 @@
 		AA0000000000000000000022 /* HelloWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000014 /* HelloWorld.cpp */; };
 		AA0000000000000000000023 /* HelloWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000016 /* HelloWorld.m */; };
 		AA0000000000000000000024 /* HelloWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000018 /* HelloWorld.swift */; };
-		AA000000000000000000002C /* Demo_C.c in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000026 /* Demo_C.c */; };
-		AA000000000000000000002D /* Demo_Cpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000028 /* Demo_Cpp.cpp */; };
-		AA000000000000000000002E /* Demo_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002A /* Demo_ObjC.m */; };
-		AA000000000000000000002F /* Demo_Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002B /* Demo_Swift.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,16 +25,9 @@
 		AA0000000000000000000017 /* HelloWorld_objc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelloWorld_objc.h; sourceTree = "<group>"; };
 		AA0000000000000000000018 /* HelloWorld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorld.swift; sourceTree = "<group>"; };
 		AA0000000000000000000019 /* HelloWorld-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HelloWorld-Bridging-Header.h"; sourceTree = "<group>"; };
-		AA0000000000000000000025 /* Demo_C.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Demo_C.h; sourceTree = "<group>"; };
-		AA0000000000000000000026 /* Demo_C.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Demo_C.c; sourceTree = "<group>"; };
-		AA0000000000000000000027 /* Demo_Cpp.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Demo_Cpp.hpp; sourceTree = "<group>"; };
-		AA0000000000000000000028 /* Demo_Cpp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Demo_Cpp.cpp; sourceTree = "<group>"; };
-		AA0000000000000000000029 /* Demo_ObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Demo_ObjC.h; sourceTree = "<group>"; };
-		AA000000000000000000002A /* Demo_ObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Demo_ObjC.m; sourceTree = "<group>"; };
-		AA000000000000000000002B /* Demo_Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo_Swift.swift; sourceTree = "<group>"; };
 		AA0000000000000000000030 /* CLAUDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CLAUDE.md; sourceTree = "<group>"; };
-		AA0000000000000000000033 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		AA0000000000000000000032 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		AA0000000000000000000033 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,13 +41,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AA0000000000000000000002 /* <group> */ = {
+		AA0000000000000000000002 = {
 			isa = PBXGroup;
 			children = (
 				AA0000000000000000000033 /* .gitignore */,
 				AA0000000000000000000030 /* CLAUDE.md */,
 				AA0000000000000000000032 /* README.md */,
-				AA0000000000000000000031 /* HelloWorld */,
+				AA0000000000000000000031 /* Source */,
 				AA0000000000000000000003 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -71,7 +60,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		AA0000000000000000000031 /* HelloWorld */ = {
+		AA0000000000000000000031 /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				AA0000000000000000000011 /* main.swift */,
@@ -83,13 +72,6 @@
 				AA0000000000000000000017 /* HelloWorld_objc.h */,
 				AA0000000000000000000018 /* HelloWorld.swift */,
 				AA0000000000000000000019 /* HelloWorld-Bridging-Header.h */,
-				AA0000000000000000000025 /* Demo_C.h */,
-				AA0000000000000000000026 /* Demo_C.c */,
-				AA0000000000000000000027 /* Demo_Cpp.hpp */,
-				AA0000000000000000000028 /* Demo_Cpp.cpp */,
-				AA0000000000000000000029 /* Demo_ObjC.h */,
-				AA000000000000000000002A /* Demo_ObjC.m */,
-				AA000000000000000000002B /* Demo_Swift.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -157,10 +139,6 @@
 				AA0000000000000000000022 /* HelloWorld.cpp in Sources */,
 				AA0000000000000000000023 /* HelloWorld.m in Sources */,
 				AA0000000000000000000024 /* HelloWorld.swift in Sources */,
-				AA000000000000000000002C /* Demo_C.c in Sources */,
-				AA000000000000000000002D /* Demo_Cpp.cpp in Sources */,
-				AA000000000000000000002E /* Demo_ObjC.m in Sources */,
-				AA000000000000000000002F /* Demo_Swift.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
