@@ -14,11 +14,11 @@ enum Grade: String, CaseIterable {
 
 	static func from(score: Double) -> Grade {
 		switch score {
-		case 90...100: return .a
-		case 80..<90:  return .b
-		case 70..<80:  return .c
-		case 60..<70:  return .d
-		default:       return .f
+		case 90...100:	return .a
+		case 80..<90:	return .b
+		case 70..<80:	return .c
+		case 60..<70:	return .d
+		default:		return .f
 		}
 	}
 }
@@ -38,9 +38,9 @@ enum StudentError: Error {
 extension StudentError: CustomStringConvertible {
 	var description: String {
 		switch self {
-		case .notFound(let id):         return "Student \(id) not found"
-		case .duplicateId(let id):      return "Duplicate id: \(id)"
-		case .invalidScore(let score):  return "Invalid score: \(score)"
+		case .notFound(let id):			return "Student \(id) not found"
+		case .duplicateId(let id):		return "Duplicate id: \(id)"
+		case .invalidScore(let score):	return "Invalid score: \(score)"
 		}
 	}
 }
@@ -150,11 +150,11 @@ func runDemoSwift() {
 		print("  [log] after \(student.name): avg = \(String(format: "%.1f", book.averageScore()))")
 	}
 
-	_ = try? book.addStudent(id: 1, name: "Alice", score: 92.5)
-	_ = try? book.addStudent(id: 2, name: "Bob",   score: 78.0)
-	_ = try? book.addStudent(id: 3, name: "Carol", score: 85.5)
-	_ = try? book.addStudent(id: 4, name: "Dave",  score: 61.0)
-	_ = try? book.addStudent(id: 5, name: "Eve",   score: 97.0)
+	_ = try? book.addStudent(id: 1, name: "Alice",	score: 92.5)
+	_ = try? book.addStudent(id: 2, name: "Bob",	score: 78.0)
+	_ = try? book.addStudent(id: 3, name: "Carol",	score: 85.5)
+	_ = try? book.addStudent(id: 4, name: "Dave",	score: 61.0)
+	_ = try? book.addStudent(id: 5, name: "Eve",	score: 97.0)
 
 	// Calling the [weak book] closure explicitly to illustrate the pattern
 	print("\nReplay with weak/strong capture:")
