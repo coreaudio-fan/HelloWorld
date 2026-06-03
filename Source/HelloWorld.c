@@ -25,8 +25,8 @@ typedef struct
 
 // The C idiom for closures: a function pointer paired with a caller-supplied
 // context pointer that carries any "captured" data.
-typedef void		(*Student_Visitor)(const Student *student, void *context);
-typedef int32_t		(*Student_Predicate)(const Student *student, void *context);
+typedef void		(*Student_Visitor)(const Student* student, void* context);
+typedef int32_t		(*Student_Predicate)(const Student* student, void* context);
 
 // ----------------------------------------------------------------------------
 // Private storage
@@ -58,15 +58,15 @@ static int32_t	find_index(int32_t id)
 // These are the C equivalent of closures: the context pointer carries
 // any data the callback needs to "capture".
 
-static void	accumulate_score(const Student *student, void *context)
+static void	accumulate_score(const Student* student, void* context)
 {
-	float *total = (float *)context;
+	float* total = (float*)context;
 	*total += student->m_score;
 }
 
-static int32_t	above_threshold(const Student *student, void *context)
+static int32_t	above_threshold(const Student* student, void* context)
 {
-	float threshold = *(const float *)context;
+	float threshold = *(const float*)context;
 	return student->m_score >= threshold;
 }
 
@@ -74,7 +74,7 @@ static int32_t	above_threshold(const Student *student, void *context)
 // Private API
 // ----------------------------------------------------------------------------
 
-static int32_t	add_student(int32_t id, const char *name, float score)
+static int32_t	add_student(int32_t id, const char* name, float score)
 {
 	if (s_count >= DEMO_C_MAX_STUDENTS)
 		return DEMO_C_ERR_FULL;
@@ -85,7 +85,7 @@ static int32_t	add_student(int32_t id, const char *name, float score)
 	if (find_index(id) >= 0)
 		return DEMO_C_ERR_INVALID;
 
-	Student *s = &s_students[s_count++];
+	Student* s = &s_students[s_count++];
 	s->m_id		= id;
 	s->m_score	= score;
 	strncpy(s->m_name, name, DEMO_C_NAME_LEN - 1);
@@ -94,13 +94,13 @@ static int32_t	add_student(int32_t id, const char *name, float score)
 	return DEMO_C_OK;
 }
 
-static const Student	*find_student(int32_t id)
+static const Student*	find_student(int32_t id)
 {
 	int32_t index = find_index(id);
 	return (index >= 0) ? &s_students[index] : NULL;
 }
 
-static void	print_student(const Student *student)
+static void	print_student(const Student* student)
 {
 	if (student == NULL)
 		return;
@@ -127,14 +127,14 @@ static float	average_score(void)
 	return total / (float)s_count;
 }
 
-static void	foreach_student(Student_Visitor visitor, void *context)
+static void	foreach_student(Student_Visitor visitor, void* context)
 {
 	for (int32_t i = 0; i < s_count; i++)
 		visitor(&s_students[i], context);
 }
 
-static int32_t	filter_students(Student_Predicate predicate, void *context,
-		Student *out_buf, int32_t buf_size)
+static int32_t	filter_students(Student_Predicate predicate, void* context,
+		Student* out_buf, int32_t buf_size)
 {
 	int32_t	out_count = 0;
 	for (int32_t i = 0; i < s_count && out_count < buf_size; i++)
@@ -181,7 +181,7 @@ void	run_demo_c(void)
 		print_student(&high_achievers[i]);
 
 	// find_student: returns a pointer or NULL
-	const Student	*found = find_student(3);
+	const Student*	found = find_student(3);
 	if (found != NULL)
 		printf("\nFound student 3: %s\n", found->m_name);
 
