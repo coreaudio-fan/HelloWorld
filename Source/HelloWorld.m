@@ -125,7 +125,7 @@ void	run_demo_objc(void) {
 	// Stored block: captures no external state here, but illustrates the pattern.
 	// The property is declared 'copy' so the block is heap-allocated.
 	book.onStudentAdded = ^(NSString *name, float score) {
-		printf("  + Added: %s\n", name.UTF8String);
+		printf("  + Added: %s (%.1f)\n", name.UTF8String, score);
 	};
 
 	[book addStudentWithId:1 name:@"Alice" score:92.5f];
@@ -143,7 +143,7 @@ void	run_demo_objc(void) {
 
 	// Filter with a predicate block — inline block as trailing argument
 	NSArray<NSString *> *high_achievers = [book namesOfStudentsMatchingPredicate:^BOOL(NSString *name, float score) {
-		return score >= 80.0f;
+		return name.length > 0 && score >= 80.0f;
 	}];
 	printf("\nStudents scoring >= 80:\n");
 	for (NSString *name in high_achievers)
