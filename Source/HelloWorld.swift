@@ -150,11 +150,11 @@ func runDemoSwift() {
 		print("  [log] after \(student.name): avg = \(String(format: "%.1f", book.averageScore()))")
 	}
 
-	try? book.addStudent(id: 1, name: "Alice", score: 92.5)
-	try? book.addStudent(id: 2, name: "Bob",   score: 78.0)
-	try? book.addStudent(id: 3, name: "Carol", score: 85.5)
-	try? book.addStudent(id: 4, name: "Dave",  score: 61.0)
-	try? book.addStudent(id: 5, name: "Eve",   score: 97.0)
+	_ = try? book.addStudent(id: 1, name: "Alice", score: 92.5)
+	_ = try? book.addStudent(id: 2, name: "Bob",   score: 78.0)
+	_ = try? book.addStudent(id: 3, name: "Carol", score: 85.5)
+	_ = try? book.addStudent(id: 4, name: "Dave",  score: 61.0)
+	_ = try? book.addStudent(id: 5, name: "Eve",   score: 97.0)
 
 	// Calling the [weak book] closure explicitly to illustrate the pattern
 	print("\nReplay with weak/strong capture:")

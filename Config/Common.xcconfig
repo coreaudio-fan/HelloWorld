@@ -41,6 +41,10 @@ GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE
 // Extra C-family warnings (applies to C, C++, Obj-C; Swift uses its own system)
 WARNING_CFLAGS = -Wall -Wextra -Wpedantic
 
+// Treat warnings as errors in every language
+GCC_TREAT_WARNINGS_AS_ERRORS = YES
+SWIFT_TREAT_WARNINGS_AS_ERRORS = YES
+
 // Miscellaneous
 COPY_PHASE_STRIP = NO
 MACOSX_DEPLOYMENT_TARGET = 14.0
