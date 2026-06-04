@@ -116,8 +116,10 @@ template<typename T>
 void	print_collection(const std::vector<T>& items)
 {
 	for (const auto& item : items)
+	{
 		std::cout << std::format("  [{:3d}]  {:<20s}  {:5.1f}\n",
 			item.m_id, item.m_name, item.m_score);
+	}
 }
 
 } // namespace
