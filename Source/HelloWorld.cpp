@@ -45,7 +45,9 @@ public:
 	{
 		m_students.push_back({id, std::move(name), score});
 		if (m_on_student_added)
+		{
 			m_on_student_added(m_students.back());
+		}
 	}
 
 	// Accepts any callable matching the signature — stored for later use
@@ -60,7 +62,9 @@ public:
 			[id](const Student& s) { return s.m_id == id; });
 
 		if (it == m_students.end())
+		{
 			return std::nullopt;
+		}
 
 		return *it;
 	}
@@ -68,7 +72,9 @@ public:
 	[[nodiscard]] double	average_score() const
 	{
 		if (m_students.empty())
+		{
 			return 0.0;
+		}
 
 		double total = std::accumulate(m_students.begin(), m_students.end(), 0.0,
 			[](double sum, const Student& s) { return sum + s.m_score; });
@@ -79,7 +85,9 @@ public:
 	void	for_each(std::function<void(const Student&)> visitor) const
 	{
 		for (const auto& s : m_students)
+		{
 			visitor(s);
+		}
 	}
 
 	[[nodiscard]] std::vector<Student>	filter(std::function<bool(const Student&)> predicate) const
@@ -170,7 +178,9 @@ void	run_demo_cpp(void)
 	};
 	std::cout << "\nRanks (via mutable lambda):\n";
 	for (const auto& s : by_score_desc)
+	{
 		print_ranked(s);
+	}
 
 	// Immediately invoked lambda: computes a one-off value inline without
 	// needing a named variable or a helper function
@@ -180,7 +190,9 @@ void	run_demo_cpp(void)
 		book.for_each([&max_val](const Student& s)
 		{
 			if (s.m_score > max_val)
+			{
 				max_val = s.m_score;
+			}
 		});
 		return max_val;
 	}();
@@ -188,10 +200,14 @@ void	run_demo_cpp(void)
 
 	// std::optional: structured binding on the result of find_student
 	if (auto found = book.find_student(3))
+	{
 		std::cout << std::format("\nFound student 3: {}\n", found->m_name);
+	}
 
 	if (!book.find_student(99))
+	{
 		std::cout << "Student 99: not found\n";
+	}
 }
 
 // -----------------------------------------------------------------------
