@@ -46,10 +46,10 @@ static int32_t	is_valid_score(float score)
 
 static int32_t	find_index(int32_t id)
 {
-	for (int32_t i = 0; i < s_count; i++)
+	for (int32_t student_index = 0; student_index < s_count; student_index++)
 	{
-		if (s_students[i].m_id == id)
-			return i;
+		if (s_students[student_index].m_id == id)
+			return student_index;
 	}
 	return -1;
 }
@@ -111,8 +111,8 @@ static void	print_all_students(void)
 {
 	printf("  [ id]  %-20s  score\n", "name");
 	printf("  -----  --------------------  -----\n");
-	for (int32_t i = 0; i < s_count; i++)
-		print_student(&s_students[i]);
+	for (int32_t student_index = 0; student_index < s_count; student_index++)
+		print_student(&s_students[student_index]);
 }
 
 static float	average_score(void)
@@ -121,26 +121,25 @@ static float	average_score(void)
 		return 0.0f;
 
 	float total = 0.0f;
-	for (int32_t i = 0; i < s_count; i++)
-		total += s_students[i].m_score;
+	for (int32_t student_index = 0; student_index < s_count; student_index++)
+		total += s_students[student_index].m_score;
 
 	return total / (float)s_count;
 }
 
 static void	foreach_student(Student_Visitor visitor, void* context)
 {
-	for (int32_t i = 0; i < s_count; i++)
-		visitor(&s_students[i], context);
+	for (int32_t student_index = 0; student_index < s_count; student_index++)
+		visitor(&s_students[student_index], context);
 }
 
-static int32_t	filter_students(Student_Predicate predicate, void* context,
-		Student* out_buf, int32_t buf_size)
+static int32_t	filter_students(Student_Predicate predicate, void* context, Student* out_buf, int32_t buf_size)
 {
 	int32_t	out_count = 0;
-	for (int32_t i = 0; i < s_count && out_count < buf_size; i++)
+	for (int32_t student_index = 0; student_index < s_count && out_count < buf_size; student_index++)
 	{
-		if (predicate(&s_students[i], context))
-			out_buf[out_count++] = s_students[i];
+		if (predicate(&s_students[student_index], context))
+			out_buf[out_count++] = s_students[student_index];
 	}
 	return out_count;
 }
@@ -173,12 +172,11 @@ void	run_demo_c(void)
 	// filter_students with a predicate and a context pointer
 	float		threshold = 80.0f;
 	Student		high_achievers[DEMO_C_MAX_STUDENTS];
-	int32_t		count = filter_students(above_threshold, &threshold,
-				high_achievers, DEMO_C_MAX_STUDENTS);
+	int32_t		count = filter_students(above_threshold, &threshold, high_achievers, DEMO_C_MAX_STUDENTS);
 
 	printf("\nStudents scoring >= %.0f:\n", threshold);
-	for (int32_t i = 0; i < count; i++)
-		print_student(&high_achievers[i]);
+	for (int32_t achiever_index = 0; achiever_index < count; achiever_index++)
+		print_student(&high_achievers[achiever_index]);
 
 	// find_student: returns a pointer or NULL
 	const Student*	found = find_student(3);

@@ -58,15 +58,15 @@ public:
 
 	[[nodiscard]] std::optional<Student>	find_student(int32_t in_id) const
 	{
-		auto student_iter = std::find_if(m_students.begin(), m_students.end(),
+		auto student_iterator = std::find_if(m_students.begin(), m_students.end(),
 			[in_id](const Student& in_student) { return in_student.m_id == in_id; });
 
-		if (student_iter == m_students.end())
+		if (student_iterator == m_students.end())
 		{
 			return std::nullopt;
 		}
 
-		return *student_iter;
+		return *student_iterator;
 	}
 
 	[[nodiscard]] double	average_score() const
@@ -93,8 +93,7 @@ public:
 	[[nodiscard]] std::vector<Student>	filter(std::function<bool(const Student&)> in_predicate) const
 	{
 		std::vector<Student> result;
-		std::copy_if(m_students.begin(), m_students.end(),
-			std::back_inserter(result), in_predicate);
+		std::copy_if(m_students.begin(), m_students.end(), std::back_inserter(result), in_predicate);
 		return result;
 	}
 
@@ -117,8 +116,7 @@ void	print_collection(const std::vector<T>& in_items)
 {
 	for (const auto& item : in_items)
 	{
-		std::cout << std::format("  [{:3d}]  {:<20s}  {:5.1f}\n",
-			item.m_id, item.m_name, item.m_score);
+		std::cout << std::format("  [{:3d}]  {:<20s}  {:5.1f}\n", item.m_id, item.m_name, item.m_score);
 	}
 }
 
@@ -148,8 +146,7 @@ void	run_demo_cpp(void)
 	std::cout << "\nAll students:\n";
 	book.for_each([](const Student& in_student)
 	{
-		std::cout << std::format("  [{:3d}]  {:<20s}  {:5.1f}\n",
-			in_student.m_id, in_student.m_name, in_student.m_score);
+		std::cout << std::format("  [{:3d}]  {:<20s}  {:5.1f}\n", in_student.m_id, in_student.m_name, in_student.m_score);
 	});
 
 	std::cout << std::format("\nAverage: {:.1f}\n", book.average_score());
