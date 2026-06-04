@@ -142,9 +142,9 @@ void	run_demo_cpp(void)
 
 	std::cout << "\nAll students:\n";
 	book.for_each(	[](const Student& in_student)
-				{
-					std::cout << std::format("  [{:3d}]  {:<20s}  {:5.1f}\n", in_student.m_id, in_student.m_name, in_student.m_score);
-				});
+					{
+						std::cout << std::format("  [{:3d}]  {:<20s}  {:5.1f}\n", in_student.m_id, in_student.m_name, in_student.m_score);
+					});
 
 	std::cout << std::format("\nAverage: {:.1f}\n", book.average_score());
 
@@ -174,16 +174,16 @@ void	run_demo_cpp(void)
 
 	// IILE: the result must be const and the computation requires iterating
 	// over all students — a named helper or mutable temporary are the alternatives.
-	double top_score = [&book]()
+	const double top_score = [&book]()
 	{
 		double max_score = 0.0;
 		book.for_each(	[&max_score](const Student& in_student)
-					{
-						if (in_student.m_score > max_score)
 						{
-							max_score = in_student.m_score;
-						}
-					});
+							if (in_student.m_score > max_score)
+							{
+								max_score = in_student.m_score;
+							}
+						});
 		return max_score;
 	}();
 	std::cout << std::format("\nTop score: {:.1f}\n", top_score);
