@@ -55,8 +55,7 @@ public:
 
 	[[nodiscard]] std::optional<Student>	find_student(int32_t in_id) const
 	{
-		auto student_iterator = std::find_if(m_students.begin(), m_students.end(),
-			[in_id](const Student& in_student) { return in_student.m_id == in_id; });
+		auto student_iterator = std::find_if(m_students.begin(), m_students.end(), [in_id](const Student& in_student) { return in_student.m_id == in_id; });
 
 		if (student_iterator == m_students.end())
 		{
@@ -73,8 +72,7 @@ public:
 			return 0.0;
 		}
 
-		double total = std::accumulate(m_students.begin(), m_students.end(), 0.0,
-			[](double in_sum, const Student& in_student) { return in_sum + in_student.m_score; });
+		double total = std::accumulate(m_students.begin(), m_students.end(), 0.0, [](double in_sum, const Student& in_student) { return in_sum + in_student.m_score; });
 
 		return total / static_cast<double>(m_students.size());
 	}
