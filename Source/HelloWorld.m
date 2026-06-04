@@ -155,8 +155,7 @@ void	run_demo_objc(void) {
 	HWStudentBlock snapshot_block = ^(NSString* name, float score) {
 		__strong HWGradeBook* strong_book = weak_book;
 		if (strong_book != nil) {
-			printf("  [snapshot] %-20s %.1f  (avg: %.1f)\n",
-			       name.UTF8String, score, strong_book.averageScore);
+			printf("  [snapshot] %-20s %.1f  (avg: %.1f)\n", name.UTF8String, score, strong_book.averageScore);
 		}
 	};
 	printf("\nEnumerating with weak/strong capture pattern:\n");

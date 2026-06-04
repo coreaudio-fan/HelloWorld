@@ -133,8 +133,7 @@ static void	foreach_student(Student_Visitor visitor, void* context)
 		visitor(&s_students[i], context);
 }
 
-static int32_t	filter_students(Student_Predicate predicate, void* context,
-		Student* out_buf, int32_t buf_size)
+static int32_t	filter_students(Student_Predicate predicate, void* context, Student* out_buf, int32_t buf_size)
 {
 	int32_t	out_count = 0;
 	for (int32_t i = 0; i < s_count && out_count < buf_size; i++)
@@ -173,8 +172,7 @@ void	run_demo_c(void)
 	// filter_students with a predicate and a context pointer
 	float		threshold = 80.0f;
 	Student		high_achievers[DEMO_C_MAX_STUDENTS];
-	int32_t		count = filter_students(above_threshold, &threshold,
-				high_achievers, DEMO_C_MAX_STUDENTS);
+	int32_t		count = filter_students(above_threshold, &threshold, high_achievers, DEMO_C_MAX_STUDENTS);
 
 	printf("\nStudents scoring >= %.0f:\n", threshold);
 	for (int32_t i = 0; i < count; i++)
