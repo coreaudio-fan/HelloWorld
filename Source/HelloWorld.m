@@ -21,9 +21,11 @@ typedef BOOL	(^HWStudentPredicate)(NSString* name, float score);
 
 @implementation HWStudent
 
-- (instancetype)initWithId:(int32_t)studentId name:(NSString*)name score:(float)score {
+- (instancetype)initWithId:(int32_t)studentId name:(NSString*)name score:(float)score
+{
 	self = [super init];
-	if (self) {
+	if (self)
+	{
 		_studentId	= studentId;
 		_name		= [name copy];
 		_score		= score;
@@ -53,17 +55,21 @@ typedef BOOL	(^HWStudentPredicate)(NSString* name, float score);
 
 @implementation HWGradeBook
 
-- (instancetype)init {
+- (instancetype)init
+{
 	self = [super init];
-	if (self) {
+	if (self)
+	{
 		_students = [NSMutableArray array];
 	}
 	return self;
 }
 
-+ (instancetype)gradeBookWithStudents:(NSArray<NSDictionary<NSString*, id>*>*)dicts {
++ (instancetype)gradeBookWithStudents:(NSArray<NSDictionary<NSString*, id>*>*)dicts
+{
 	HWGradeBook* book = [[HWGradeBook alloc] init];
-	for (NSDictionary* dict in dicts) {
+	for (NSDictionary* dict in dicts)
+	{
 		[book addStudentWithId:[dict[@"id"] intValue]
 		                 name:dict[@"name"]
 		                score:[dict[@"score"] floatValue]];
@@ -71,41 +77,59 @@ typedef BOOL	(^HWStudentPredicate)(NSString* name, float score);
 	return book;
 }
 
-- (void)addStudentWithId:(int32_t)studentId name:(NSString*)name score:(float)score {
+- (void)addStudentWithId:(int32_t)studentId name:(NSString*)name score:(float)score
+{
 	HWStudent* student = [[HWStudent alloc] initWithId:studentId name:name score:score];
 	[self.students addObject:student];
-	if (self.onStudentAdded) {
+	if (self.onStudentAdded)
+	{
 		self.onStudentAdded(name, score);
 	}
 }
 
-- (nullable NSString*)nameOfStudentWithId:(int32_t)studentId {
-	for (HWStudent* student in self.students) {
+- (nullable NSString*)nameOfStudentWithId:(int32_t)studentId
+{
+	for (HWStudent* student in self.students)
+	{
 		if (student.studentId == studentId)
+		{
 			return student.name;
+		}
 	}
 	return nil;
 }
 
-- (float)averageScore {
+- (float)averageScore
+{
 	if (self.students.count == 0)
+	{
 		return 0.0f;
+	}
 	float total = 0.0f;
 	for (HWStudent* student in self.students)
+	{
 		total += student.score;
+	}
 	return total / (float)self.students.count;
 }
 
-- (void)enumerateStudentsUsingBlock:(HWStudentBlock)block {
+- (void)enumerateStudentsUsingBlock:(HWStudentBlock)block
+{
 	for (HWStudent* student in self.students)
+	{
 		block(student.name, student.score);
+	}
 }
 
-- (NSArray<NSString*>*)namesOfStudentsMatchingPredicate:(HWStudentPredicate)predicate {
+- (NSArray<NSString*>*)namesOfStudentsMatchingPredicate:(HWStudentPredicate)predicate
+{
 	NSMutableArray<NSString*>* result = [NSMutableArray array];
-	for (HWStudent* student in self.students) {
+	for (HWStudent* student in self.students)
+	{
 		if (predicate(student.name, student.score))
+		{
 			[result addObject:student.name];
+		}
 	}
 	return [result copy];
 }
@@ -117,14 +141,16 @@ NS_ASSUME_NONNULL_END
 // -----------------------------------------------------------------------
 // Demo
 // -----------------------------------------------------------------------
-void	run_demo_objc(void) {
+void	run_demo_objc(void)
+{
 	printf("\n=== Objective-C Demo ===\n\n");
 
 	HWGradeBook* book = [[HWGradeBook alloc] init];
 
 	// Stored block: captures no external state here, but illustrates the pattern.
 	// The property is declared 'copy' so the block is heap-allocated.
-	book.onStudentAdded = ^(NSString* name, float score) {
+	book.onStudentAdded = ^(NSString* name, float score)
+	{
 		printf("  + Added: %s (%.1f)\n", name.UTF8String, score);
 	};
 
@@ -135,26 +161,32 @@ void	run_demo_objc(void) {
 	[book addStudentWithId:5 name:@"Eve"	score:97.0f];
 
 	printf("\nAll students:\n");
-	[book enumerateStudentsUsingBlock:^(NSString* name, float score) {
+	[book enumerateStudentsUsingBlock:^(NSString* name, float score)
+	{
 		printf("  %-20s  %.1f\n", name.UTF8String, score);
 	}];
 
 	printf("\nAverage: %.1f\n", book.averageScore);
 
 	// Filter with a predicate block — inline block as trailing argument
-	NSArray<NSString*>* high_achievers = [book namesOfStudentsMatchingPredicate:^BOOL(NSString* name, float score) {
+	NSArray<NSString*>* high_achievers = [book namesOfStudentsMatchingPredicate:^BOOL(NSString* name, float score)
+	{
 		return name.length > 0 && score >= 80.0f;
 	}];
 	printf("\nStudents scoring >= 80:\n");
 	for (NSString* name in high_achievers)
+	{
 		printf("  %s\n", name.UTF8String);
+	}
 
 	// __weak/__strong dance: prevents a retain cycle when a block captures an
 	// object that owns the block. Without __weak, each would keep the other alive.
 	__weak HWGradeBook* weak_book = book;
-	HWStudentBlock snapshot_block = ^(NSString* name, float score) {
+	HWStudentBlock snapshot_block = ^(NSString* name, float score)
+	{
 		__strong HWGradeBook* strong_book = weak_book;
-		if (strong_book != nil) {
+		if (strong_book != nil)
+		{
 			printf("  [snapshot] %-20s %.1f  (avg: %.1f)\n", name.UTF8String, score, strong_book.averageScore);
 		}
 	};
@@ -178,7 +210,8 @@ void	run_demo_objc(void) {
 // -----------------------------------------------------------------------
 // Hello
 // -----------------------------------------------------------------------
-void	hello_objc(void) {
+void	hello_objc(void)
+{
 	NSString* msg = @"Hello from Objective-C";
 	fprintf(stdout, "%s\n", msg.UTF8String);
 }
