@@ -58,15 +58,15 @@ public:
 
 	[[nodiscard]] std::optional<Student>	find_student(int32_t in_id) const
 	{
-		auto student_iter = std::find_if(m_students.begin(), m_students.end(),
+		auto student_iterator = std::find_if(m_students.begin(), m_students.end(),
 			[in_id](const Student& in_student) { return in_student.m_id == in_id; });
 
-		if (student_iter == m_students.end())
+		if (student_iterator == m_students.end())
 		{
 			return std::nullopt;
 		}
 
-		return *student_iter;
+		return *student_iterator;
 	}
 
 	[[nodiscard]] double	average_score() const
