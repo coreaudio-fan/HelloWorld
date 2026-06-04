@@ -9,9 +9,6 @@
 #include <string>
 #include <vector>
 
-// Note: Allman brace style used throughout; deviates from the K&R style shown
-// in the C++ Core Guidelines examples (NL.17) but applied consistently.
-
 namespace
 {
 
