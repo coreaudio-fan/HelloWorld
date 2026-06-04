@@ -55,8 +55,7 @@ public:
 
 	[[nodiscard]] std::optional<Student>	find_student(int32_t in_id) const
 	{
-		auto student_iterator = std::find_if(m_students.begin(), m_students.end(),
-			[in_id](const Student& in_student) { return in_student.m_id == in_id; });
+		auto student_iterator = std::find_if(m_students.begin(), m_students.end(), [in_id](const Student& in_student) { return in_student.m_id == in_id; });
 
 		if (student_iterator == m_students.end())
 		{
@@ -73,8 +72,7 @@ public:
 			return 0.0;
 		}
 
-		double total = std::accumulate(m_students.begin(), m_students.end(), 0.0,
-			[](double in_sum, const Student& in_student) { return in_sum + in_student.m_score; });
+		double total = std::accumulate(m_students.begin(), m_students.end(), 0.0, [](double in_sum, const Student& in_student) { return in_sum + in_student.m_score; });
 
 		return total / static_cast<double>(m_students.size());
 	}
@@ -129,10 +127,10 @@ void	run_demo_cpp(void)
 	Grade_Book book;
 
 	// Stored closure: fires each time a student is added
-	book.set_on_student_added([](const Student& in_student)
-	{
-		std::cout << std::format("  + Added: {}\n", in_student.m_name);
-	});
+	book.set_on_student_added(	[](const Student& in_student)
+								{
+									std::cout << std::format("  + Added: {}\n", in_student.m_name);
+								});
 
 	book.add_student(1, "Alice",	92.5);
 	book.add_student(2, "Bob",		78.0);
@@ -141,27 +139,21 @@ void	run_demo_cpp(void)
 	book.add_student(5, "Eve",		97.0);
 
 	std::cout << "\nAll students:\n";
-	book.for_each([](const Student& in_student)
-	{
-		std::cout << std::format("  [{:3d}]  {:<20s}  {:5.1f}\n", in_student.m_id, in_student.m_name, in_student.m_score);
-	});
+	book.for_each(	[](const Student& in_student)
+					{
+						std::cout << std::format("  [{:3d}]  {:<20s}  {:5.1f}\n", in_student.m_id, in_student.m_name, in_student.m_score);
+					});
 
 	std::cout << std::format("\nAverage: {:.1f}\n", book.average_score());
 
 	// Lambda capturing by value — safe because the lambda does not outlive threshold
 	double threshold = 80.0;
-	auto high_achievers = book.filter([threshold](const Student& in_student)
-	{
-		return in_student.m_score >= threshold;
-	});
+	auto high_achievers = book.filter([threshold](const Student& in_student) { return in_student.m_score >= threshold; });
 	std::cout << std::format("\nStudents scoring >= {:.0f}:\n", threshold);
 	print_collection(high_achievers);
 
 	// Comparator lambda passed to sorted_by
-	auto by_score_desc = book.sorted_by([](const Student& in_lhs, const Student& in_rhs)
-	{
-		return in_lhs.m_score > in_rhs.m_score;
-	});
+	auto by_score_desc = book.sorted_by([](const Student& in_lhs, const Student& in_rhs) { return in_lhs.m_score > in_rhs.m_score; });
 	std::cout << "\nRanked by score:\n";
 	print_collection(by_score_desc);
 
@@ -178,18 +170,18 @@ void	run_demo_cpp(void)
 		print_ranked(student);
 	}
 
-	// Immediately invoked lambda: computes a one-off value inline without
-	// needing a named variable or a helper function
-	double top_score = [&book]()
+	// IILE: the result must be const and the computation requires iterating
+	// over all students — a named helper or mutable temporary are the alternatives.
+	const double top_score = [&book]()
 	{
 		double max_score = 0.0;
-		book.for_each([&max_score](const Student& in_student)
-		{
-			if (in_student.m_score > max_score)
-			{
-				max_score = in_student.m_score;
-			}
-		});
+		book.for_each(	[&max_score](const Student& in_student)
+						{
+							if (in_student.m_score > max_score)
+							{
+								max_score = in_student.m_score;
+							}
+						});
 		return max_score;
 	}();
 	std::cout << std::format("\nTop score: {:.1f}\n", top_score);
