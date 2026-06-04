@@ -58,15 +58,15 @@ public:
 
 	[[nodiscard]] std::optional<Student>	find_student(int32_t in_id) const
 	{
-		auto it = std::find_if(m_students.begin(), m_students.end(),
-			[in_id](const Student& in_s) { return in_s.m_id == in_id; });
+		auto student_iter = std::find_if(m_students.begin(), m_students.end(),
+			[in_id](const Student& in_student) { return in_student.m_id == in_id; });
 
-		if (it == m_students.end())
+		if (student_iter == m_students.end())
 		{
 			return std::nullopt;
 		}
 
-		return *it;
+		return *student_iter;
 	}
 
 	[[nodiscard]] double	average_score() const
@@ -77,16 +77,16 @@ public:
 		}
 
 		double total = std::accumulate(m_students.begin(), m_students.end(), 0.0,
-			[](double in_sum, const Student& in_s) { return in_sum + in_s.m_score; });
+			[](double in_sum, const Student& in_student) { return in_sum + in_student.m_score; });
 
 		return total / static_cast<double>(m_students.size());
 	}
 
 	void	for_each(std::function<void(const Student&)> in_visitor) const
 	{
-		for (const auto& s : m_students)
+		for (const auto& student : m_students)
 		{
-			in_visitor(s);
+			in_visitor(student);
 		}
 	}
 
@@ -134,9 +134,9 @@ void	run_demo_cpp(void)
 	Grade_Book book;
 
 	// Stored closure: fires each time a student is added
-	book.set_on_student_added([](const Student& in_s)
+	book.set_on_student_added([](const Student& in_student)
 	{
-		std::cout << std::format("  + Added: {}\n", in_s.m_name);
+		std::cout << std::format("  + Added: {}\n", in_student.m_name);
 	});
 
 	book.add_student(1, "Alice",	92.5);
@@ -146,27 +146,27 @@ void	run_demo_cpp(void)
 	book.add_student(5, "Eve",		97.0);
 
 	std::cout << "\nAll students:\n";
-	book.for_each([](const Student& in_s)
+	book.for_each([](const Student& in_student)
 	{
 		std::cout << std::format("  [{:3d}]  {:<20s}  {:5.1f}\n",
-			in_s.m_id, in_s.m_name, in_s.m_score);
+			in_student.m_id, in_student.m_name, in_student.m_score);
 	});
 
 	std::cout << std::format("\nAverage: {:.1f}\n", book.average_score());
 
 	// Lambda capturing by value — safe because the lambda does not outlive threshold
 	double threshold = 80.0;
-	auto high_achievers = book.filter([threshold](const Student& in_s)
+	auto high_achievers = book.filter([threshold](const Student& in_student)
 	{
-		return in_s.m_score >= threshold;
+		return in_student.m_score >= threshold;
 	});
 	std::cout << std::format("\nStudents scoring >= {:.0f}:\n", threshold);
 	print_collection(high_achievers);
 
 	// Comparator lambda passed to sorted_by
-	auto by_score_desc = book.sorted_by([](const Student& in_a, const Student& in_b)
+	auto by_score_desc = book.sorted_by([](const Student& in_lhs, const Student& in_rhs)
 	{
-		return in_a.m_score > in_b.m_score;
+		return in_lhs.m_score > in_rhs.m_score;
 	});
 	std::cout << "\nRanked by score:\n";
 	print_collection(by_score_desc);
@@ -174,29 +174,29 @@ void	run_demo_cpp(void)
 	// Mutable lambda: captures a counter by value and mutates it across calls.
 	// Without 'mutable', modifying a captured-by-value variable is a compile error.
 	int32_t rank = 0;
-	auto print_ranked = [rank](const Student& in_s) mutable
+	auto print_ranked = [rank](const Student& in_student) mutable
 	{
-		std::cout << std::format("  #{}: {}\n", ++rank, in_s.m_name);
+		std::cout << std::format("  #{}: {}\n", ++rank, in_student.m_name);
 	};
 	std::cout << "\nRanks (via mutable lambda):\n";
-	for (const auto& s : by_score_desc)
+	for (const auto& student : by_score_desc)
 	{
-		print_ranked(s);
+		print_ranked(student);
 	}
 
 	// Immediately invoked lambda: computes a one-off value inline without
 	// needing a named variable or a helper function
 	double top_score = [&book]()
 	{
-		double max_val = 0.0;
-		book.for_each([&max_val](const Student& in_s)
+		double max_score = 0.0;
+		book.for_each([&max_score](const Student& in_student)
 		{
-			if (in_s.m_score > max_val)
+			if (in_student.m_score > max_score)
 			{
-				max_val = in_s.m_score;
+				max_score = in_student.m_score;
 			}
 		});
-		return max_val;
+		return max_score;
 	}();
 	std::cout << std::format("\nTop score: {:.1f}\n", top_score);
 
