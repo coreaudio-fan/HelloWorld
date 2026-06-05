@@ -18,24 +18,28 @@ namespace
 // -----------------------------------------------------------------------
 // Grade_Book — maps a student id to a (name, score) pair. Add-only plus
 // fail-safe removal; a student is never mutated once added, and the map
-// key enforces one student per id. Built on std::map and std::tuple
-// (ALL-4), with the tuple's rough edges smoothed by the standard library's
-// own facilities (ALL-5): structured bindings internally and named member
-// readers on Student.
+// key enforces one student per id. Storage is a std::map whose value is a
+// std::tuple — a positional pair (ALL-4) — while the outward Student is a
+// small named struct, since a *named* record reads better as a struct than
+// a tuple and still gets structured bindings for free.
 // -----------------------------------------------------------------------
 class Grade_Book
 {
 public:
-	// Public API type: a std::tuple of (id, name, score) with named readers.
-	// Deriving from std::tuple inherits its constructors and its lexicographic
-	// comparison operators, so Student is sortable for free.
-	struct Student : std::tuple<int32_t, std::string, double>
+	// Public API type: a small aggregate of (id, name, score). A *named*
+	// record reads better as a struct than a std::tuple, and an aggregate
+	// still gets structured bindings for free — no inheritance, no tuple-
+	// protocol boilerplate. (std::tuple stays the right tool for the
+	// positional Roster value below.)
+	struct Student
 	{
-		using std::tuple<int32_t, std::string, double>::tuple;
+		int32_t		m_id	= 0;
+		std::string	m_name	= {};
+		double		m_score	= 0.0;
 
-		[[nodiscard]] int32_t				id() const		{ return std::get<0>(*this); }
-		[[nodiscard]] const std::string&	name() const	{ return std::get<1>(*this); }
-		[[nodiscard]] double				score() const	{ return std::get<2>(*this); }
+		[[nodiscard]] int32_t				id() const		{ return m_id; }
+		[[nodiscard]] const std::string&	name() const	{ return m_name; }
+		[[nodiscard]] double				score() const	{ return m_score; }
 	};
 
 	// F.18: take name by value and move it to avoid an unnecessary copy.
@@ -132,7 +136,7 @@ private:
 	[[nodiscard]] static Student	from_entry(const Roster::value_type& in_entry)
 	{
 		const auto& [name, score] = in_entry.second;
-		return Student{in_entry.first, name, score};
+		return Student{.m_id = in_entry.first, .m_name = name, .m_score = score};
 	}
 
 	Roster								m_students;
