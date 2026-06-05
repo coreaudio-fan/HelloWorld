@@ -36,10 +36,6 @@ public:
 		int32_t		m_id	= 0;
 		std::string	m_name	= {};
 		double		m_score	= 0.0;
-
-		[[nodiscard]] int32_t				id() const		{ return m_id; }
-		[[nodiscard]] const std::string&	name() const	{ return m_name; }
-		[[nodiscard]] double				score() const	{ return m_score; }
 	};
 
 	// F.18: take name by value and move it to avoid an unnecessary copy.
@@ -143,12 +139,12 @@ private:
 	std::function<void(const Student&)>	m_on_student_added;
 };
 
-// Prints a vector of students using the named accessors.
+// Prints a vector of students using its named fields.
 void	print_collection(const std::vector<Grade_Book::Student>& in_students)
 {
 	for (const auto& student : in_students)
 	{
-		std::cout << std::format("  [{:3d}]  {:<20s}  {:5.1f}\n", student.id(), student.name(), student.score());
+		std::cout << std::format("  [{:3d}]  {:<20s}  {:5.1f}\n", student.m_id, student.m_name, student.m_score);
 	}
 }
 
@@ -166,7 +162,7 @@ void	run_demo_cpp(void)
 	// Stored closure: fires each time a student is added
 	book.set_on_student_added(	[](const Grade_Book::Student& in_student)
 								{
-									std::cout << std::format("  + Added: {}\n", in_student.name());
+									std::cout << std::format("  + Added: {}\n", in_student.m_name);
 								});
 
 	book.add_student(1, "Alice",	92.5);
@@ -183,19 +179,19 @@ void	run_demo_cpp(void)
 	std::cout << "\nAll students:\n";
 	book.for_each(	[](const Grade_Book::Student& in_student)
 					{
-						std::cout << std::format("  [{:3d}]  {:<20s}  {:5.1f}\n", in_student.id(), in_student.name(), in_student.score());
+						std::cout << std::format("  [{:3d}]  {:<20s}  {:5.1f}\n", in_student.m_id, in_student.m_name, in_student.m_score);
 					});
 
 	std::cout << std::format("\nAverage: {:.1f}\n", book.average_score());
 
 	// Lambda capturing by value — safe because the lambda does not outlive threshold
 	double threshold = 80.0;
-	auto high_achievers = book.filter([threshold](const Grade_Book::Student& in_student) { return in_student.score() >= threshold; });
+	auto high_achievers = book.filter([threshold](const Grade_Book::Student& in_student) { return in_student.m_score >= threshold; });
 	std::cout << std::format("\nStudents scoring >= {:.0f}:\n", threshold);
 	print_collection(high_achievers);
 
 	// Comparator lambda passed to sorted_by
-	auto by_score_desc = book.sorted_by([](const Grade_Book::Student& in_lhs, const Grade_Book::Student& in_rhs) { return in_lhs.score() > in_rhs.score(); });
+	auto by_score_desc = book.sorted_by([](const Grade_Book::Student& in_lhs, const Grade_Book::Student& in_rhs) { return in_lhs.m_score > in_rhs.m_score; });
 	std::cout << "\nRanked by score:\n";
 	print_collection(by_score_desc);
 
@@ -204,7 +200,7 @@ void	run_demo_cpp(void)
 	int32_t rank = 0;
 	auto print_ranked = [rank](const Grade_Book::Student& in_student) mutable
 	{
-		std::cout << std::format("  #{}: {}\n", ++rank, in_student.name());
+		std::cout << std::format("  #{}: {}\n", ++rank, in_student.m_name);
 	};
 	std::cout << "\nRanks (via mutable lambda):\n";
 	for (const auto& student : by_score_desc)
@@ -219,9 +215,9 @@ void	run_demo_cpp(void)
 		double max_score = 0.0;
 		book.for_each(	[&max_score](const Grade_Book::Student& in_student)
 						{
-							if (in_student.score() > max_score)
+							if (in_student.m_score > max_score)
 							{
-								max_score = in_student.score();
+								max_score = in_student.m_score;
 							}
 						});
 		return max_score;
@@ -231,7 +227,7 @@ void	run_demo_cpp(void)
 	// std::optional: query result that may be absent
 	if (auto found = book.find_student(3))
 	{
-		std::cout << std::format("\nFound student 3: {}\n", found->name());
+		std::cout << std::format("\nFound student 3: {}\n", found->m_name);
 	}
 
 	if (!book.find_student(99))
@@ -244,7 +240,7 @@ void	run_demo_cpp(void)
 	book.remove_student(2);
 	book.remove_student(99);
 	std::cout << "\nAfter removing id 2 (and a no-op remove of id 99):\n";
-	print_collection(book.sorted_by([](const Grade_Book::Student& in_lhs, const Grade_Book::Student& in_rhs) { return in_lhs.id() < in_rhs.id(); }));
+	print_collection(book.sorted_by([](const Grade_Book::Student& in_lhs, const Grade_Book::Student& in_rhs) { return in_lhs.m_id < in_rhs.m_id; }));
 }
 
 // -----------------------------------------------------------------------
