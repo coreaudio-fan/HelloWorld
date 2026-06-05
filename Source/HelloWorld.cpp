@@ -29,14 +29,6 @@ struct Student
 class Grade_Book
 {
 public:
-	// Rule of 6: all six special member functions explicitly defined.
-	Grade_Book() = default;
-	~Grade_Book() = default;
-	Grade_Book(const Grade_Book& in_other) = default;
-	Grade_Book&	operator=(const Grade_Book& in_other) = default;
-	Grade_Book(Grade_Book&& in_other) = default;
-	Grade_Book&	operator=(Grade_Book&& in_other) = default;
-
 	// F.18: take name by value and move it to avoid an unnecessary copy
 	void	add_student(int32_t in_id, std::string in_name, double in_score)
 	{
@@ -100,7 +92,7 @@ public:
 	}
 
 private:
-	std::vector<Student>					m_students;
+	std::vector<Student>				m_students;
 	std::function<void(const Student&)>	m_on_student_added;
 };
 
