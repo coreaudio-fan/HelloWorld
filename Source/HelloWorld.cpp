@@ -198,10 +198,10 @@ void	run_demo_cpp(void)
 	// Mutable lambda: captures a counter by value and mutates it across calls.
 	// Without 'mutable', modifying a captured-by-value variable is a compile error.
 	int32_t rank = 0;
-	auto print_ranked = [rank](const Grade_Book::Student& in_student) mutable
-	{
-		std::cout << std::format("  #{}: {}\n", ++rank, in_student.m_name);
-	};
+	auto print_ranked =	[rank](const Grade_Book::Student& in_student) mutable
+						{
+							std::cout << std::format("  #{}: {}\n", ++rank, in_student.m_name);
+						};
 	std::cout << "\nRanks (via mutable lambda):\n";
 	for (const auto& student : by_score_desc)
 	{
@@ -210,18 +210,18 @@ void	run_demo_cpp(void)
 
 	// IILE: the result must be const and the computation requires iterating
 	// over all students — a named helper or mutable temporary are the alternatives.
-	const double top_score = [&book]()
-	{
-		double max_score = 0.0;
-		book.for_each(	[&max_score](const Grade_Book::Student& in_student)
-						{
-							if (in_student.m_score > max_score)
-							{
-								max_score = in_student.m_score;
-							}
-						});
-		return max_score;
-	}();
+	const double top_score =	[&book]()
+								{
+									double max_score = 0.0;
+									book.for_each(	[&max_score](const Grade_Book::Student& in_student)
+													{
+														if (in_student.m_score > max_score)
+														{
+															max_score = in_student.m_score;
+														}
+													});
+									return max_score;
+								}();
 	std::cout << std::format("\nTop score: {:.1f}\n", top_score);
 
 	// std::optional: query result that may be absent
