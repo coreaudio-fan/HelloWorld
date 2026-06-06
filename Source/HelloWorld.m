@@ -8,27 +8,27 @@ NS_ASSUME_NONNULL_BEGIN
 // Without a typedef, block parameters in method signatures quickly become unreadable.
 // Note: block properties must be declared 'copy' (not 'strong') so the block
 // is copied from the stack to the heap when assigned.
-typedef void	(^HWStudentBlock)(NSString* name, float score);
-typedef BOOL	(^HWStudentPredicate)(NSString* name, float score);
+typedef void	(^HWStudentBlock)(NSString* in_name, float in_score);
+typedef BOOL	(^HWStudentPredicate)(NSString* in_name, float in_score);
 
 // Private student model — used only inside this file
 @interface HWStudent : NSObject
 @property (nonatomic, assign)	int32_t		studentId;
 @property (nonatomic, copy)		NSString*	name;
 @property (nonatomic, assign)	float		score;
-- (instancetype)initWithId:(int32_t)studentId name:(NSString*)name score:(float)score;
+- (instancetype)initWithId:(int32_t)in_studentId name:(NSString*)in_name score:(float)in_score;
 @end
 
 @implementation HWStudent
 
-- (instancetype)initWithId:(int32_t)studentId name:(NSString*)name score:(float)score
+- (instancetype)initWithId:(int32_t)in_studentId name:(NSString*)in_name score:(float)in_score
 {
 	self = [super init];
 	if (self)
 	{
-		_studentId	= studentId;
-		_name		= [name copy];
-		_score		= score;
+		_studentId	= in_studentId;
+		_name		= [in_name copy];
+		_score		= in_score;
 	}
 	return self;
 }
@@ -41,16 +41,16 @@ typedef BOOL	(^HWStudentPredicate)(NSString* name, float score);
 @property (nonatomic, copy, nullable)	HWStudentBlock				onStudentAdded;
 @property (nonatomic, strong)			NSMutableArray<HWStudent*>*	students;
 
-- (void)addStudentWithId:(int32_t)studentId
-                    name:(NSString*)name
-                   score:(float)score;
+- (void)addStudentWithId:(int32_t)in_studentId
+                    name:(NSString*)in_name
+                   score:(float)in_score;
 
-- (nullable NSString*)nameOfStudentWithId:(int32_t)studentId;
+- (nullable NSString*)nameOfStudentWithId:(int32_t)in_studentId;
 - (float)averageScore;
-- (void)enumerateStudentsUsingBlock:(HWStudentBlock)block;
-- (NSArray<NSString*>*)namesOfStudentsMatchingPredicate:(HWStudentPredicate)predicate;
+- (void)enumerateStudentsUsingBlock:(HWStudentBlock)in_block;
+- (NSArray<NSString*>*)namesOfStudentsMatchingPredicate:(HWStudentPredicate)in_predicate;
 
-+ (instancetype)gradeBookWithStudents:(NSArray<NSDictionary<NSString*, id>*>*)students;
++ (instancetype)gradeBookWithStudents:(NSArray<NSDictionary<NSString*, id>*>*)in_studentDictionaries;
 @end
 
 @implementation HWGradeBook
@@ -65,38 +65,40 @@ typedef BOOL	(^HWStudentPredicate)(NSString* name, float score);
 	return self;
 }
 
-+ (instancetype)gradeBookWithStudents:(NSArray<NSDictionary<NSString*, id>*>*)dicts
++ (instancetype)gradeBookWithStudents:(NSArray<NSDictionary<NSString*, id>*>*)in_studentDictionaries
 {
 	HWGradeBook* book = [[HWGradeBook alloc] init];
-	for (NSDictionary* dict in dicts)
+	for (NSDictionary* dictionary in in_studentDictionaries)
 	{
-		[book addStudentWithId:[dict[@"id"] intValue]
-		                 name:dict[@"name"]
-		                score:[dict[@"score"] floatValue]];
+		[book addStudentWithId:[dictionary[@"id"] intValue]
+		                 name:dictionary[@"name"]
+		                score:[dictionary[@"score"] floatValue]];
 	}
 	return book;
 }
 
-- (void)addStudentWithId:(int32_t)studentId name:(NSString*)name score:(float)score
+- (void)addStudentWithId:(int32_t)in_studentId name:(NSString*)in_name score:(float)in_score
 {
-	HWStudent* student = [[HWStudent alloc] initWithId:studentId name:name score:score];
+	HWStudent* student = [[HWStudent alloc] initWithId:in_studentId name:in_name score:in_score];
 	[self.students addObject:student];
 	if (self.onStudentAdded)
 	{
-		self.onStudentAdded(name, score);
+		self.onStudentAdded(in_name, in_score);
 	}
 }
 
-- (nullable NSString*)nameOfStudentWithId:(int32_t)studentId
+- (nullable NSString*)nameOfStudentWithId:(int32_t)in_studentId
 {
+	NSString* foundName = nil;
 	for (HWStudent* student in self.students)
 	{
-		if (student.studentId == studentId)
+		if (student.studentId == in_studentId)
 		{
-			return student.name;
+			foundName = student.name;
+			break;
 		}
 	}
-	return nil;
+	return foundName;
 }
 
 - (float)averageScore
@@ -113,20 +115,20 @@ typedef BOOL	(^HWStudentPredicate)(NSString* name, float score);
 	return total / (float)self.students.count;
 }
 
-- (void)enumerateStudentsUsingBlock:(HWStudentBlock)block
+- (void)enumerateStudentsUsingBlock:(HWStudentBlock)in_block
 {
 	for (HWStudent* student in self.students)
 	{
-		block(student.name, student.score);
+		in_block(student.name, student.score);
 	}
 }
 
-- (NSArray<NSString*>*)namesOfStudentsMatchingPredicate:(HWStudentPredicate)predicate
+- (NSArray<NSString*>*)namesOfStudentsMatchingPredicate:(HWStudentPredicate)in_predicate
 {
 	NSMutableArray<NSString*>* result = [NSMutableArray array];
 	for (HWStudent* student in self.students)
 	{
-		if (predicate(student.name, student.score))
+		if (in_predicate(student.name, student.score))
 		{
 			[result addObject:student.name];
 		}
@@ -149,10 +151,10 @@ void	run_demo_objc(void)
 
 	// Stored block: captures no external state here, but illustrates the pattern.
 	// The property is declared 'copy' so the block is heap-allocated.
-	book.onStudentAdded = ^(NSString* name, float score)
-	{
-		printf("  + Added: %s (%.1f)\n", name.UTF8String, score);
-	};
+	book.onStudentAdded =	^(NSString* in_name, float in_score)
+							{
+								printf("  + Added: %s (%.1f)\n", in_name.UTF8String, in_score);
+							};
 
 	[book addStudentWithId:1 name:@"Alice"	score:92.5f];
 	[book addStudentWithId:2 name:@"Bob"	score:78.0f];
@@ -161,43 +163,43 @@ void	run_demo_objc(void)
 	[book addStudentWithId:5 name:@"Eve"	score:97.0f];
 
 	printf("\nAll students:\n");
-	[book enumerateStudentsUsingBlock:^(NSString* name, float score)
-	{
-		printf("  %-20s  %.1f\n", name.UTF8String, score);
-	}];
+	[book enumerateStudentsUsingBlock:	^(NSString* in_name, float in_score)
+										{
+											printf("  %-20s  %.1f\n", in_name.UTF8String, in_score);
+										}];
 
 	printf("\nAverage: %.1f\n", book.averageScore);
 
 	// Filter with a predicate block — inline block as trailing argument
-	NSArray<NSString*>* high_achievers = [book namesOfStudentsMatchingPredicate:^BOOL(NSString* name, float score)
-	{
-		return name.length > 0 && score >= 80.0f;
-	}];
+	NSArray<NSString*>* highAchievers = [book namesOfStudentsMatchingPredicate:	^BOOL(NSString* in_name, float in_score)
+																				{
+																					return (in_name.length > 0) && (in_score >= 80.0f);
+																				}];
 	printf("\nStudents scoring >= 80:\n");
-	for (NSString* name in high_achievers)
+	for (NSString* name in highAchievers)
 	{
 		printf("  %s\n", name.UTF8String);
 	}
 
 	// __weak/__strong dance: prevents a retain cycle when a block captures an
 	// object that owns the block. Without __weak, each would keep the other alive.
-	__weak HWGradeBook* weak_book = book;
-	HWStudentBlock snapshot_block = ^(NSString* name, float score)
-	{
-		__strong HWGradeBook* strong_book = weak_book;
-		if (strong_book != nil)
-		{
-			printf("  [snapshot] %-20s %.1f  (avg: %.1f)\n", name.UTF8String, score, strong_book.averageScore);
-		}
-	};
+	__weak HWGradeBook* weakBook = book;
+	HWStudentBlock snapshotBlock =	^(NSString* in_name, float in_score)
+									{
+										__strong HWGradeBook* strongBook = weakBook;
+										if (strongBook != nil)
+										{
+											printf("  [snapshot] %-20s %.1f  (avg: %.1f)\n", in_name.UTF8String, in_score, strongBook.averageScore);
+										}
+									};
 	printf("\nEnumerating with weak/strong capture pattern:\n");
-	[book enumerateStudentsUsingBlock:snapshot_block];
+	[book enumerateStudentsUsingBlock:snapshotBlock];
 
 	// Dot notation vs message syntax — both compile; style guides disagree.
 	// Apple's own code mixes both; many teams pick one and enforce it.
-	float avg_dot		= book.averageScore;        // dot notation (property access style)
-	float avg_message	= [book averageScore];       // message syntax (traditional Objective-C)
-	printf("\navg (dot): %.1f   avg (message): %.1f\n", avg_dot, avg_message);
+	float averageViaDot		= book.averageScore;        // dot notation (property access style)
+	float averageViaMessage	= [book averageScore];       // message syntax (traditional Objective-C)
+	printf("\navg (dot): %.1f   avg (message): %.1f\n", averageViaDot, averageViaMessage);
 
 	// Factory class method
 	HWGradeBook* book2 = [HWGradeBook gradeBookWithStudents:@[
@@ -212,6 +214,6 @@ void	run_demo_objc(void)
 // -----------------------------------------------------------------------
 void	hello_objc(void)
 {
-	NSString* msg = @"Hello from Objective-C";
-	fprintf(stdout, "%s\n", msg.UTF8String);
+	NSString* message = @"Hello from Objective-C";
+	fprintf(stdout, "%s\n", message.UTF8String);
 }

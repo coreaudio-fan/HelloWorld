@@ -12,13 +12,13 @@ enum Grade: String, CaseIterable {
 	case d = "D"
 	case f = "F"
 
-	static func from(score: Double) -> Grade {
-		switch score {
-		case 90...100:	return .a
-		case 80..<90:	return .b
-		case 70..<80:	return .c
-		case 60..<70:	return .d
-		default:		return .f
+	static func from(score in_score: Double) -> Grade {
+		return switch in_score {
+			case 90...100:	.a
+			case 80..<90:	.b
+			case 70..<80:	.c
+			case 60..<70:	.d
+			default:		.f
 		}
 	}
 }
@@ -37,10 +37,10 @@ enum StudentError: Error {
 // that keeps the type definition uncluttered.
 extension StudentError: CustomStringConvertible {
 	var description: String {
-		switch self {
-		case .notFound(let id):			return "Student \(id) not found"
-		case .duplicateId(let id):		return "Duplicate id: \(id)"
-		case .invalidScore(let score):	return "Invalid score: \(score)"
+		return switch self {
+			case .notFound(let id):			"Student \(id) not found"
+			case .duplicateId(let id):		"Duplicate id: \(id)"
+			case .invalidScore(let score):	"Invalid score: \(score)"
 		}
 	}
 }
@@ -86,23 +86,23 @@ class GradeBook {
 	// @discardableResult: callers that don't need the returned Student
 	// won't receive a compiler warning for ignoring it.
 	@discardableResult
-	func addStudent(id: Int32, name: String, score: Double) throws -> Student {
-		guard score >= 0 && score <= 100 else {
-			throw StudentError.invalidScore(score)
+	func addStudent(id in_id: Int32, name in_name: String, score in_score: Double) throws -> Student {
+		guard (in_score >= 0) && (in_score <= 100) else {
+			throw StudentError.invalidScore(in_score)
 		}
-		guard !students.contains(where: { $0.id == id }) else {
-			throw StudentError.duplicateId(id)
+		guard !students.contains(where: { $0.id == in_id }) else {
+			throw StudentError.duplicateId(in_id)
 		}
-		let student = Student(id: id, name: name, score: score)
+		let student = Student(id: in_id, name: in_name, score: in_score)
 		students.append(student)
 		onStudentAdded?(student)
 		return student
 	}
 
 	// Returns Result rather than Optional so the caller knows *why* lookup failed.
-	func findStudent(withId id: Int32) -> Result<Student, StudentError> {
-		guard let student = students.first(where: { $0.id == id }) else {
-			return .failure(.notFound(id: id))
+	func findStudent(withId in_id: Int32) -> Result<Student, StudentError> {
+		guard let student = students.first(where: { $0.id == in_id }) else {
+			return .failure(.notFound(id: in_id))
 		}
 		return .success(student)
 	}
@@ -112,18 +112,18 @@ class GradeBook {
 		return students.reduce(0.0) { $0 + $1.score } / Double(students.count)
 	}
 
-	func forEach(do body: (Student) -> Void) {
-		students.forEach(body)
+	func forEach(do in_body: (Student) -> Void) {
+		students.forEach(in_body)
 	}
 
-	func filter(matching predicate: (Student) -> Bool) -> [Student] {
-		students.filter(predicate)
+	func filter(matching in_predicate: (Student) -> Bool) -> [Student] {
+		students.filter(in_predicate)
 	}
 
-	func sorted(by order: SortOrder = .ascending) -> [Student] {
-		switch order {
-		case .ascending:  return students.sorted { $0.score < $1.score }
-		case .descending: return students.sorted { $0.score > $1.score }
+	func sorted(by in_order: SortOrder = .ascending) -> [Student] {
+		return switch in_order {
+			case .ascending:	students.sorted { $0.score < $1.score }
+			case .descending:	students.sorted { $0.score > $1.score }
 		}
 	}
 }
@@ -138,16 +138,16 @@ func runDemoSwift() {
 
 	// Stored escaping closure: assigned before any students are added so it
 	// fires for each addStudent call below.
-	book.onStudentAdded = { student in
-		print("  + Added: \(student.name)")
+	book.onStudentAdded = { in_student in
+		print("  + Added: \(in_student.name)")
 	}
 
 	// [weak book] prevents a retain cycle: if book owned this closure and the
 	// closure captured book strongly, neither could ever be deallocated.
 	// guard let turns the weak reference into a strong one for the closure body.
-	let logAdded: (Student) -> Void = { [weak book] student in
+	let logAdded: (Student) -> Void = { [weak book] in_student in
 		guard let book = book else { return }
-		print("  [log] after \(student.name): avg = \(String(format: "%.1f", book.averageScore()))")
+		print("  [log] after \(in_student.name): avg = \(String(format: "%.1f", book.averageScore()))")
 	}
 
 	_ = try? book.addStudent(id: 1, name: "Alice",	score: 92.5)
@@ -174,16 +174,14 @@ func runDemoSwift() {
 	// Debate: is a single chain more readable, or should intermediate
 	// results be named variables?
 	let topNames = book.sorted(by: .descending)
-		.filter { $0.grade == .a || $0.grade == .b }
+		.filter { ($0.grade == .a) || ($0.grade == .b) }
 		.map { $0.name }
 	print("\nTop students (A or B): \(topNames.joined(separator: ", "))")
 
 	// switch on Result — exhaustive, no default:
 	switch book.findStudent(withId: 3) {
-	case .success(let student):
-		print("\nFound student 3: \(student.name) — grade \(student.grade.rawValue)")
-	case .failure(let error):
-		print("\nError: \(error)")
+		case .success(let student):	print("\nFound student 3: \(student.name) — grade \(student.grade.rawValue)")
+		case .failure(let error):	print("\nError: \(error)")
 	}
 
 	// 'if case' pattern matching — concise alternative to a full switch
@@ -197,19 +195,19 @@ func runDemoSwift() {
 	print("\nGrade scale:")
 	for grade in Grade.allCases {
 		switch grade {
-		case .a: print("  A: 90-100  Excellent")
-		case .b: print("  B: 80-89   Good")
-		case .c: print("  C: 70-79   Average")
-		case .d: print("  D: 60-69   Below average")
-		case .f: print("  F:  0-59   Failing")
+			case .a:	print("  A: 90-100  Excellent")
+			case .b:	print("  B: 80-89   Good")
+			case .c:	print("  C: 70-79   Average")
+			case .d:	print("  D: 60-69   Below average")
+			case .f:	print("  F:  0-59   Failing")
 		}
 	}
 
 	// @autoclosure: the expression passed as 'condition' is not evaluated
 	// unless the function actually inspects it — useful for assertions
 	// and validation helpers where evaluation may be expensive or have side effects
-	func require(_ condition: @autoclosure () -> Bool, _ message: String) {
-		if !condition() { print("Requirement failed: \(message)") }
+	func require(_ in_condition: @autoclosure () -> Bool, _ in_message: String) {
+		if !in_condition() { print("Requirement failed: \(in_message)") }
 	}
 	require(book.averageScore() > 0, "grade book should not be empty")
 }

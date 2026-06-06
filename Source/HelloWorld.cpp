@@ -43,10 +43,10 @@ public:
 	// rejected, never overwritten, so a re-add cannot mutate an existing student.
 	bool	add_student(int32_t in_id, std::string in_name, double in_score)
 	{
-		const auto [position, is_inserted] = m_students.try_emplace(in_id, std::move(in_name), in_score);
+		const auto [position_iterator, is_inserted] = m_students.try_emplace(in_id, std::move(in_name), in_score);
 		if (is_inserted && m_on_student_added)
 		{
-			m_on_student_added(from_entry(*position));
+			m_on_student_added(from_entry(*position_iterator));
 		}
 		return is_inserted;
 	}
@@ -66,13 +66,13 @@ public:
 
 	[[nodiscard]] std::optional<Student>	find_student(int32_t in_id) const
 	{
-		const auto found = m_students.find(in_id);
-		if (found == m_students.end())
+		const auto found_iterator = m_students.find(in_id);
+		if (found_iterator == m_students.end())
 		{
 			return std::nullopt;
 		}
 
-		return from_entry(*found);
+		return from_entry(*found_iterator);
 	}
 
 	[[nodiscard]] double	average_score() const
