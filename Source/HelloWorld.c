@@ -32,8 +32,8 @@ typedef int32_t		(*Student_Predicate)(const Student* in_student_ptr, void* in_co
 // Private storage
 // ----------------------------------------------------------------------------
 
-static Student	s_students[DEMO_C_MAX_STUDENTS];
-static int32_t	s_count = 0;
+static Student	g_students[DEMO_C_MAX_STUDENTS];
+static int32_t	g_count = 0;
 
 // ----------------------------------------------------------------------------
 // Private helpers
@@ -47,9 +47,9 @@ static int32_t	is_valid_score(float in_score)
 static int32_t	find_index(int32_t in_id)
 {
 	int32_t found_index = -1;
-	for (int32_t student_index = 0; student_index < s_count; student_index++)
+	for (int32_t student_index = 0; student_index < g_count; ++student_index)
 	{
-		if (s_students[student_index].m_id == in_id)
+		if (g_students[student_index].m_id == in_id)
 		{
 			found_index = student_index;
 			break;
@@ -80,7 +80,7 @@ static int32_t	above_threshold(const Student* in_student_ptr, void* in_context_p
 
 static int32_t	add_student(int32_t in_id, const char* in_name, float in_score)
 {
-	if (s_count >= DEMO_C_MAX_STUDENTS)
+	if (g_count >= DEMO_C_MAX_STUDENTS)
 	{
 		return DEMO_C_ERR_FULL;
 	}
@@ -97,7 +97,7 @@ static int32_t	add_student(int32_t in_id, const char* in_name, float in_score)
 		return DEMO_C_ERR_INVALID;
 	}
 
-	Student* student_ptr = &s_students[s_count++];
+	Student* student_ptr	= &g_students[g_count++];
 	student_ptr->m_id		= in_id;
 	student_ptr->m_score	= in_score;
 	strncpy(student_ptr->m_name, in_name, DEMO_C_NAME_LEN - 1);
@@ -109,7 +109,7 @@ static int32_t	add_student(int32_t in_id, const char* in_name, float in_score)
 static const Student*	find_student(int32_t in_id)
 {
 	int32_t found_index = find_index(in_id);
-	return (found_index >= 0) ? &s_students[found_index] : NULL;
+	return (found_index >= 0) ? &g_students[found_index] : NULL;
 }
 
 static void	print_student(const Student* in_student_ptr)
@@ -125,44 +125,44 @@ static void	print_all_students(void)
 {
 	printf("  [ id]  %-20s  score\n", "name");
 	printf("  -----  --------------------  -----\n");
-	for (int32_t student_index = 0; student_index < s_count; student_index++)
+	for (int32_t student_index = 0; student_index < g_count; ++student_index)
 	{
-		print_student(&s_students[student_index]);
+		print_student(&g_students[student_index]);
 	}
 }
 
 static float	average_score(void)
 {
-	if (s_count == 0)
+	if (g_count == 0)
 	{
 		return 0.0f;
 	}
 
 	float total = 0.0f;
-	for (int32_t student_index = 0; student_index < s_count; student_index++)
+	for (int32_t student_index = 0; student_index < g_count; ++student_index)
 	{
-		total += s_students[student_index].m_score;
+		total += g_students[student_index].m_score;
 	}
 
-	return total / (float)s_count;
+	return total / (float)g_count;
 }
 
 static void	foreach_student(Student_Visitor in_visitor, void* io_context_ptr)
 {
-	for (int32_t student_index = 0; student_index < s_count; student_index++)
+	for (int32_t student_index = 0; student_index < g_count; ++student_index)
 	{
-		in_visitor(&s_students[student_index], io_context_ptr);
+		in_visitor(&g_students[student_index], io_context_ptr);
 	}
 }
 
 static int32_t	filter_students(Student_Predicate in_predicate, void* in_context_ptr, Student* out_buffer, int32_t in_buffer_capacity)
 {
 	int32_t	out_count = 0;
-	for (int32_t student_index = 0; (student_index < s_count) && (out_count < in_buffer_capacity); student_index++)
+	for (int32_t student_index = 0; (student_index < g_count) && (out_count < in_buffer_capacity); ++student_index)
 	{
-		if (in_predicate(&s_students[student_index], in_context_ptr))
+		if (in_predicate(&g_students[student_index], in_context_ptr))
 		{
-			out_buffer[out_count++] = s_students[student_index];
+			out_buffer[out_count++] = g_students[student_index];
 		}
 	}
 	return out_count;
@@ -199,7 +199,7 @@ void	run_demo_c(void)
 	int32_t		high_achiever_count = filter_students(above_threshold, &threshold, high_achievers, DEMO_C_MAX_STUDENTS);
 
 	printf("\nStudents scoring >= %.0f:\n", threshold);
-	for (int32_t achiever_index = 0; achiever_index < high_achiever_count; achiever_index++)
+	for (int32_t achiever_index = 0; achiever_index < high_achiever_count; ++achiever_index)
 	{
 		print_student(&high_achievers[achiever_index]);
 	}
