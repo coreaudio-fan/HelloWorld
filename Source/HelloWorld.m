@@ -21,14 +21,18 @@ typedef BOOL	(^HWStudentPredicate)(NSString* in_name, float in_score);
 
 @implementation HWStudent
 
+@synthesize studentId	= m_studentId;
+@synthesize name		= m_name;
+@synthesize score		= m_score;
+
 - (instancetype)initWithId:(int32_t)in_studentId name:(NSString*)in_name score:(float)in_score
 {
 	self = [super init];
 	if (self)
 	{
-		_studentId	= in_studentId;
-		_name		= [in_name copy];
-		_score		= in_score;
+		m_studentId	= in_studentId;
+		m_name		= [in_name copy];
+		m_score		= in_score;
 	}
 	return self;
 }
@@ -41,9 +45,7 @@ typedef BOOL	(^HWStudentPredicate)(NSString* in_name, float in_score);
 @property (nonatomic, copy, nullable)	HWStudentBlock				onStudentAdded;
 @property (nonatomic, strong)			NSMutableArray<HWStudent*>*	students;
 
-- (void)addStudentWithId:(int32_t)in_studentId
-                    name:(NSString*)in_name
-                   score:(float)in_score;
+- (void)addStudentWithId:(int32_t)in_studentId name:(NSString*)in_name score:(float)in_score;
 
 - (nullable NSString*)nameOfStudentWithId:(int32_t)in_studentId;
 - (float)averageScore;
@@ -55,12 +57,15 @@ typedef BOOL	(^HWStudentPredicate)(NSString* in_name, float in_score);
 
 @implementation HWGradeBook
 
+@synthesize onStudentAdded	= m_onStudentAdded;
+@synthesize students		= m_students;
+
 - (instancetype)init
 {
 	self = [super init];
 	if (self)
 	{
-		_students = [NSMutableArray array];
+		m_students = [NSMutableArray array];
 	}
 	return self;
 }
@@ -68,11 +73,9 @@ typedef BOOL	(^HWStudentPredicate)(NSString* in_name, float in_score);
 + (instancetype)gradeBookWithStudents:(NSArray<NSDictionary<NSString*, id>*>*)in_studentDictionaries
 {
 	HWGradeBook* book = [[HWGradeBook alloc] init];
-	for (NSDictionary* dictionary in in_studentDictionaries)
+	for (NSDictionary* studentRecord in in_studentDictionaries)
 	{
-		[book addStudentWithId:[dictionary[@"id"] intValue]
-		                 name:dictionary[@"name"]
-		                score:[dictionary[@"score"] floatValue]];
+		[book addStudentWithId:[studentRecord[@"id"] intValue] name:studentRecord[@"name"] score:[studentRecord[@"score"] floatValue]];
 	}
 	return book;
 }
@@ -125,15 +128,15 @@ typedef BOOL	(^HWStudentPredicate)(NSString* in_name, float in_score);
 
 - (NSArray<NSString*>*)namesOfStudentsMatchingPredicate:(HWStudentPredicate)in_predicate
 {
-	NSMutableArray<NSString*>* result = [NSMutableArray array];
+	NSMutableArray<NSString*>* matchingNames = [NSMutableArray array];
 	for (HWStudent* student in self.students)
 	{
 		if (in_predicate(student.name, student.score))
 		{
-			[result addObject:student.name];
+			[matchingNames addObject:student.name];
 		}
 	}
-	return [result copy];
+	return [matchingNames copy];
 }
 
 @end
@@ -197,16 +200,16 @@ void	run_demo_objc(void)
 
 	// Dot notation vs message syntax — both compile; style guides disagree.
 	// Apple's own code mixes both; many teams pick one and enforce it.
-	float averageViaDot		= book.averageScore;        // dot notation (property access style)
-	float averageViaMessage	= [book averageScore];       // message syntax (traditional Objective-C)
+	float averageViaDot		= book.averageScore; // dot notation (property access style)
+	float averageViaMessage	= [book averageScore]; // message syntax (traditional Objective-C)
 	printf("\navg (dot): %.1f   avg (message): %.1f\n", averageViaDot, averageViaMessage);
 
 	// Factory class method
-	HWGradeBook* book2 = [HWGradeBook gradeBookWithStudents:@[
+	HWGradeBook* factoryBook = [HWGradeBook gradeBookWithStudents:@[
 		@{@"id": @10, @"name": @"Frank", @"score": @88.0},
 		@{@"id": @11, @"name": @"Grace", @"score": @74.5},
 	]];
-	printf("\nBook2 average: %.1f\n", book2.averageScore);
+	printf("\nBook2 average: %.1f\n", factoryBook.averageScore);
 }
 
 // -----------------------------------------------------------------------

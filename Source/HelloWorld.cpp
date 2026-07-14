@@ -53,7 +53,7 @@ public:
 
 	// Fail-safe teardown (ALL-21): removing an absent id is a successful no-op,
 	// so there is nothing to report and nothing for the caller to branch on.
-	void	remove_student(int32_t in_id)
+	void	remove_student(int32_t in_id) noexcept
 	{
 		m_students.erase(in_id);
 	}
@@ -248,5 +248,5 @@ void	run_demo_cpp(void)
 // -----------------------------------------------------------------------
 void	hello_cpp(void)
 {
-	std::cout << "Hello from C++" << std::endl;
+	std::cout << "Hello from C++\n";
 }
