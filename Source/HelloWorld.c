@@ -7,39 +7,42 @@
 // Private constants and types
 // ----------------------------------------------------------------------------
 
-#define DEMO_C_MAX_STUDENTS	64
-#define DEMO_C_NAME_LEN		64
+constexpr int32_t k_demo_c_max_students		= 64;
+constexpr int32_t k_demo_c_name_capacity	= 64;
 
 // Error codes returned by functions that can fail
-#define DEMO_C_OK		 0
-#define DEMO_C_ERR_FULL		-1
-#define DEMO_C_ERR_NOT_FOUND	-2
-#define DEMO_C_ERR_INVALID	-3
+enum Demo_C_Status : int32_t
+{
+	k_demo_c_ok				=  0,
+	k_demo_c_err_full		= -1,
+	k_demo_c_err_not_found	= -2,
+	k_demo_c_err_invalid	= -3,
+};
 
 typedef struct
 {
 	int32_t	m_id;
-	char	m_name[DEMO_C_NAME_LEN];
+	char	m_name[k_demo_c_name_capacity];
 	float	m_score;
 } Student;
 
 // The C idiom for closures: a function pointer paired with a caller-supplied
 // context pointer that carries any "captured" data.
 typedef void		(*Student_Visitor)(const Student* in_student_ptr, void* io_context_ptr);
-typedef int32_t		(*Student_Predicate)(const Student* in_student_ptr, void* in_context_ptr);
+typedef bool		(*Student_Predicate)(const Student* in_student_ptr, void* in_context_ptr);
 
 // ----------------------------------------------------------------------------
 // Private storage
 // ----------------------------------------------------------------------------
 
-static Student	g_students[DEMO_C_MAX_STUDENTS];
+static Student	g_students[k_demo_c_max_students];
 static int32_t	g_count = 0;
 
 // ----------------------------------------------------------------------------
 // Private helpers
 // ----------------------------------------------------------------------------
 
-static int32_t	is_valid_score(float in_score)
+static bool	is_valid_score(float in_score)
 {
 	return (in_score >= 0.0f) && (in_score <= 100.0f);
 }
@@ -68,7 +71,7 @@ static void	accumulate_score(const Student* in_student_ptr, void* io_context_ptr
 	*total_ptr += in_student_ptr->m_score;
 }
 
-static int32_t	above_threshold(const Student* in_student_ptr, void* in_context_ptr)
+static bool	is_above_threshold(const Student* in_student_ptr, void* in_context_ptr)
 {
 	float threshold = *(const float*)in_context_ptr;
 	return in_student_ptr->m_score >= threshold;
@@ -78,43 +81,43 @@ static int32_t	above_threshold(const Student* in_student_ptr, void* in_context_p
 // Private API
 // ----------------------------------------------------------------------------
 
-static int32_t	add_student(int32_t in_id, const char* in_name, float in_score)
+static enum Demo_C_Status	add_student(int32_t in_id, const char* in_name, float in_score)
 {
-	if (g_count >= DEMO_C_MAX_STUDENTS)
+	if (g_count >= k_demo_c_max_students)
 	{
-		return DEMO_C_ERR_FULL;
+		return k_demo_c_err_full;
 	}
-	if ((in_name == NULL) || (in_name[0] == '\0'))
+	if ((in_name == nullptr) || (in_name[0] == '\0'))
 	{
-		return DEMO_C_ERR_INVALID;
+		return k_demo_c_err_invalid;
 	}
 	if (!is_valid_score(in_score))
 	{
-		return DEMO_C_ERR_INVALID;
+		return k_demo_c_err_invalid;
 	}
 	if (find_index(in_id) >= 0)
 	{
-		return DEMO_C_ERR_INVALID;
+		return k_demo_c_err_invalid;
 	}
 
 	Student* student_ptr	= &g_students[g_count++];
 	student_ptr->m_id		= in_id;
 	student_ptr->m_score	= in_score;
-	strncpy(student_ptr->m_name, in_name, DEMO_C_NAME_LEN - 1);
-	student_ptr->m_name[DEMO_C_NAME_LEN - 1] = '\0';
+	strncpy(student_ptr->m_name, in_name, k_demo_c_name_capacity - 1);
+	student_ptr->m_name[k_demo_c_name_capacity - 1] = '\0';
 
-	return DEMO_C_OK;
+	return k_demo_c_ok;
 }
 
 static const Student*	find_student(int32_t in_id)
 {
 	int32_t found_index = find_index(in_id);
-	return (found_index >= 0) ? &g_students[found_index] : NULL;
+	return (found_index >= 0) ? &g_students[found_index] : nullptr;
 }
 
 static void	print_student(const Student* in_student_ptr)
 {
-	if (in_student_ptr == NULL)
+	if (in_student_ptr == nullptr)
 	{
 		return;
 	}
@@ -157,15 +160,15 @@ static void	foreach_student(Student_Visitor in_visitor, void* io_context_ptr)
 
 static int32_t	filter_students(Student_Predicate in_predicate, void* in_context_ptr, Student* out_buffer, int32_t in_buffer_capacity)
 {
-	int32_t	out_count = 0;
-	for (int32_t student_index = 0; (student_index < g_count) && (out_count < in_buffer_capacity); ++student_index)
+	int32_t	written_count = 0;
+	for (int32_t student_index = 0; (student_index < g_count) && (written_count < in_buffer_capacity); ++student_index)
 	{
 		if (in_predicate(&g_students[student_index], in_context_ptr))
 		{
-			out_buffer[out_count++] = g_students[student_index];
+			out_buffer[written_count++] = g_students[student_index];
 		}
 	}
-	return out_count;
+	return written_count;
 }
 
 // ----------------------------------------------------------------------------
@@ -195,8 +198,8 @@ void	run_demo_c(void)
 
 	// filter_students with a predicate and a context pointer
 	float		threshold = 80.0f;
-	Student		high_achievers[DEMO_C_MAX_STUDENTS];
-	int32_t		high_achiever_count = filter_students(above_threshold, &threshold, high_achievers, DEMO_C_MAX_STUDENTS);
+	Student		high_achievers[k_demo_c_max_students];
+	int32_t		high_achiever_count = filter_students(is_above_threshold, &threshold, high_achievers, k_demo_c_max_students);
 
 	printf("\nStudents scoring >= %.0f:\n", threshold);
 	for (int32_t achiever_index = 0; achiever_index < high_achiever_count; ++achiever_index)
@@ -204,14 +207,14 @@ void	run_demo_c(void)
 		print_student(&high_achievers[achiever_index]);
 	}
 
-	// find_student: returns a pointer or NULL
+	// find_student: returns a pointer or nullptr
 	const Student*	found_ptr = find_student(3);
-	if (found_ptr != NULL)
+	if (found_ptr != nullptr)
 	{
 		printf("\nFound student 3: %s\n", found_ptr->m_name);
 	}
 
-	if (find_student(99) == NULL)
+	if (find_student(99) == nullptr)
 	{
 		printf("Student 99: not found\n");
 	}
