@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AA0000000000000000000020 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000011 /* main.swift */; };
-		AA0000000000000000000021 /* HelloWorld.c in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000012 /* HelloWorld.c */; };
 		AA0000000000000000000022 /* HelloWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000014 /* HelloWorld.cpp */; };
-		AA0000000000000000000023 /* HelloWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000016 /* HelloWorld.m */; };
 		AA0000000000000000000024 /* HelloWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000018 /* HelloWorld.swift */; };
 /* End PBXBuildFile section */
 
@@ -22,12 +20,8 @@
 		2D72041E2FCFB5AF00DBDE97 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		AA0000000000000000000010 /* HelloWorld */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HelloWorld; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA0000000000000000000011 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		AA0000000000000000000012 /* HelloWorld.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = HelloWorld.c; sourceTree = "<group>"; };
-		AA0000000000000000000013 /* HelloWorld.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelloWorld.h; sourceTree = "<group>"; };
 		AA0000000000000000000014 /* HelloWorld.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = HelloWorld.cpp; sourceTree = "<group>"; };
 		AA0000000000000000000015 /* HelloWorld.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = HelloWorld.hpp; sourceTree = "<group>"; };
-		AA0000000000000000000016 /* HelloWorld.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelloWorld.m; sourceTree = "<group>"; };
-		AA0000000000000000000017 /* HelloWorld_objc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelloWorld_objc.h; sourceTree = "<group>"; };
 		AA0000000000000000000018 /* HelloWorld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorld.swift; sourceTree = "<group>"; };
 		AA0000000000000000000019 /* HelloWorld-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HelloWorld-Bridging-Header.h"; sourceTree = "<group>"; };
 		AA0000000000000000000030 /* CLAUDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CLAUDE.md; sourceTree = "<group>"; };
@@ -82,12 +76,8 @@
 			isa = PBXGroup;
 			children = (
 				AA0000000000000000000011 /* main.swift */,
-				AA0000000000000000000012 /* HelloWorld.c */,
-				AA0000000000000000000013 /* HelloWorld.h */,
 				AA0000000000000000000014 /* HelloWorld.cpp */,
 				AA0000000000000000000015 /* HelloWorld.hpp */,
-				AA0000000000000000000016 /* HelloWorld.m */,
-				AA0000000000000000000017 /* HelloWorld_objc.h */,
 				AA0000000000000000000018 /* HelloWorld.swift */,
 				AA0000000000000000000019 /* HelloWorld-Bridging-Header.h */,
 			);
@@ -153,9 +143,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA0000000000000000000020 /* main.swift in Sources */,
-				AA0000000000000000000021 /* HelloWorld.c in Sources */,
 				AA0000000000000000000022 /* HelloWorld.cpp in Sources */,
-				AA0000000000000000000023 /* HelloWorld.m in Sources */,
 				AA0000000000000000000024 /* HelloWorld.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
