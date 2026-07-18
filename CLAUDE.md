@@ -24,13 +24,13 @@ There are no tests in this project.
 
 This is a macOS command-line tool (single Xcode target: `HelloWorld`) with two purposes:
 
-1. **Cross-language interop demo** — `Source/main.swift` calls a `hello_*` function implemented in each of the four supported languages (C, C++, Objective-C, Swift), then calls a `run_demo_*` function from each language that exercises a richer set of constructs.
+1. **Cross-language interop demo** — `Source/main.swift` calls a `hello_*` function implemented in each of the two supported languages (C++, Swift), then calls a `run_demo_*` function from each language that exercises a richer set of constructs.
 
 2. **Coding standards reference** — each language's `HelloWorld.*` file is written to illustrate the project's coding style rules and to surface the style decisions that tend to generate the most debate. See `~/.claude/CLAUDE.md` for the global style guide.
 
 ### Cross-language bridging
 
-Swift calls into C, C++, and Objective-C via `Source/HelloWorld-Bridging-Header.h`, which imports all three language headers. The C++ header wraps its declarations in an `extern "C"` guard so symbols are accessible without C++ name mangling.
+Swift calls into C++ via `Source/HelloWorld-Bridging-Header.h`, which imports the C++ header. That header wraps its declarations in an `extern "C"` guard so symbols are accessible without C++ name mangling. The guard is load-bearing: Swift's ClangImporter parses the bridging header in C mode, where `__cplusplus` is undefined, so it sees plain C declarations while the C++ translation unit sees `extern "C"` linkage.
 
 ### File reference
 
@@ -39,11 +39,9 @@ Each language has a single source/header pair containing both its `hello_*` func
 | File | Role |
 |---|---|
 | `main.swift` | Entry point — calls all `hello_*` and `run_demo_*` functions |
-| `HelloWorld.h` / `HelloWorld.c` | C: `hello_c`, `run_demo_c`; private `Student` struct, error codes, function-pointer visitor/predicate pattern |
 | `HelloWorld.hpp` / `HelloWorld.cpp` | C++: `hello_cpp`, `run_demo_cpp`; private `Grade_Book` class, lambdas, `std::optional`, `std::format` |
-| `HelloWorld_objc.h` / `HelloWorld.m` | Objective-C: `hello_objc`, `run_demo_objc`; private `HWGradeBook`, block typedefs, `__weak`/`__strong` pattern |
 | `HelloWorld.swift` | Swift: `helloSwift`, `runDemoSwift`; enums, `GradeBook` class, closures, `Result`, `@escaping` |
-| `HelloWorld-Bridging-Header.h` | Exposes C, C++, and Obj-C entry points to Swift |
+| `HelloWorld-Bridging-Header.h` | Exposes the C++ entry points to Swift |
 
 ### Build settings (`Config/`)
 
