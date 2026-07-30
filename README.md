@@ -17,7 +17,7 @@ This project serves two purposes:
 
 ```sh
 # Build
-xcodebuild -project HelloWorld.xcodeproj -scheme HelloWorld -configuration Debug build
+xcodebuild -project HelloWorld.xcodeproj -scheme Tool -configuration Debug build
 
 # Run (with Derived Data set to "Relative" in Xcode → Settings → Locations)
 ./DerivedData/HelloWorld/Build/Products/Debug/HelloWorld

@@ -1,0 +1,17 @@
+//	Architectures
+SDKROOT = macosx
+SUPPORTED_PLATFORMS = macosx
+
+//	Deployment
+MACOSX_DEPLOYMENT_TARGET = 26.0
+
+//	Info.plist Values
+INFOPLIST_KEY_NSHumanReadableCopyright = ©2026 by coreaudio-fan
+
+//	Packaging
+GENERATE_INFOPLIST_FILE = YES
+PRODUCT_BUNDLE_IDENTIFIER = coreaudio-fan.HelloWorld
+PRODUCT_NAME = HelloWorld
+
+//	Swift Compiler - General
+SWIFT_OBJC_BRIDGING_HEADER = Source/HelloWorld-Bridging-Header.h
