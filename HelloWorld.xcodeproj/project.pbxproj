@@ -3,31 +3,28 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		AA0000000000000000000020 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000011 /* main.swift */; };
-		AA0000000000000000000022 /* HelloWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000014 /* HelloWorld.cpp */; };
-		AA0000000000000000000024 /* HelloWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000018 /* HelloWorld.swift */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
-		2D72041A2FCFB5AF00DBDE97 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
-		2D72041B2FCFB5AF00DBDE97 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
-		2D72041C2FCFB5AF00DBDE97 /* HelloWorld-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "HelloWorld-Debug.xcconfig"; sourceTree = "<group>"; };
-		2D72041D2FCFB5AF00DBDE97 /* HelloWorld-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "HelloWorld-Release.xcconfig"; sourceTree = "<group>"; };
-		2D72041E2FCFB5AF00DBDE97 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		AA0000000000000000000010 /* HelloWorld */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HelloWorld; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA0000000000000000000011 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		AA0000000000000000000014 /* HelloWorld.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = HelloWorld.cpp; sourceTree = "<group>"; };
-		AA0000000000000000000015 /* HelloWorld.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = HelloWorld.hpp; sourceTree = "<group>"; };
-		AA0000000000000000000018 /* HelloWorld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorld.swift; sourceTree = "<group>"; };
-		AA0000000000000000000019 /* HelloWorld-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HelloWorld-Bridging-Header.h"; sourceTree = "<group>"; };
 		AA0000000000000000000030 /* CLAUDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CLAUDE.md; sourceTree = "<group>"; };
 		AA0000000000000000000032 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AA0000000000000000000033 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		2D72041F2FCFB5AF00DBDE97 /* Config */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Config;
+			sourceTree = "<group>";
+		};
+		AA0000000000000000000031 /* Source */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Source;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		AA0000000000000000000006 /* Frameworks */ = {
@@ -40,18 +37,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2D72041F2FCFB5AF00DBDE97 /* Config */ = {
-			isa = PBXGroup;
-			children = (
-				2D72041A2FCFB5AF00DBDE97 /* Common.xcconfig */,
-				2D72041B2FCFB5AF00DBDE97 /* Debug.xcconfig */,
-				2D72041C2FCFB5AF00DBDE97 /* HelloWorld-Debug.xcconfig */,
-				2D72041D2FCFB5AF00DBDE97 /* HelloWorld-Release.xcconfig */,
-				2D72041E2FCFB5AF00DBDE97 /* Release.xcconfig */,
-			);
-			path = Config;
-			sourceTree = "<group>";
-		};
 		AA0000000000000000000002 = {
 			isa = PBXGroup;
 			children = (
@@ -72,24 +57,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		AA0000000000000000000031 /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				AA0000000000000000000011 /* main.swift */,
-				AA0000000000000000000014 /* HelloWorld.cpp */,
-				AA0000000000000000000015 /* HelloWorld.hpp */,
-				AA0000000000000000000018 /* HelloWorld.swift */,
-				AA0000000000000000000019 /* HelloWorld-Bridging-Header.h */,
-			);
-			path = Source;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AA0000000000000000000004 /* HelloWorld */ = {
+		AA0000000000000000000004 /* Tool */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AA0000000000000000000008 /* Build configuration list for PBXNativeTarget "HelloWorld" */;
+			buildConfigurationList = AA0000000000000000000008 /* Build configuration list for PBXNativeTarget "Tool" */;
 			buildPhases = (
 				AA0000000000000000000005 /* Sources */,
 				AA0000000000000000000006 /* Frameworks */,
@@ -98,7 +71,12 @@
 			);
 			dependencies = (
 			);
-			name = HelloWorld;
+			fileSystemSynchronizedGroups = (
+				AA0000000000000000000031 /* Source */,
+			);
+			name = Tool;
+			packageProductDependencies = (
+			);
 			productName = HelloWorld;
 			productReference = AA0000000000000000000010 /* HelloWorld */;
 			productType = "com.apple.product-type.tool";
@@ -120,7 +98,6 @@
 				};
 			};
 			buildConfigurationList = AA0000000000000000000007 /* Build configuration list for PBXProject "HelloWorld" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -128,11 +105,13 @@
 				Base,
 			);
 			mainGroup = AA0000000000000000000002;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = AA0000000000000000000003 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AA0000000000000000000004 /* HelloWorld */,
+				AA0000000000000000000004 /* Tool */,
 			);
 		};
 /* End PBXProject section */
@@ -142,9 +121,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA0000000000000000000020 /* main.swift in Sources */,
-				AA0000000000000000000022 /* HelloWorld.cpp in Sources */,
-				AA0000000000000000000024 /* HelloWorld.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,28 +129,32 @@
 /* Begin XCBuildConfiguration section */
 		AA0000000000000000000009 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2D72041B2FCFB5AF00DBDE97 /* Debug.xcconfig */;
+			baseConfigurationReferenceAnchor = 2D72041F2FCFB5AF00DBDE97 /* Config */;
+			baseConfigurationReferenceRelativePath = "Project-Debug.xcconfig";
 			buildSettings = {
 			};
 			name = Debug;
 		};
 		AA000000000000000000000A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2D72041E2FCFB5AF00DBDE97 /* Release.xcconfig */;
+			baseConfigurationReferenceAnchor = 2D72041F2FCFB5AF00DBDE97 /* Config */;
+			baseConfigurationReferenceRelativePath = "Project-Release.xcconfig";
 			buildSettings = {
 			};
 			name = Release;
 		};
 		AA000000000000000000000B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2D72041C2FCFB5AF00DBDE97 /* HelloWorld-Debug.xcconfig */;
+			baseConfigurationReferenceAnchor = 2D72041F2FCFB5AF00DBDE97 /* Config */;
+			baseConfigurationReferenceRelativePath = "Tool-Debug.xcconfig";
 			buildSettings = {
 			};
 			name = Debug;
 		};
 		AA000000000000000000000C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2D72041D2FCFB5AF00DBDE97 /* HelloWorld-Release.xcconfig */;
+			baseConfigurationReferenceAnchor = 2D72041F2FCFB5AF00DBDE97 /* Config */;
+			baseConfigurationReferenceRelativePath = "Tool-Release.xcconfig";
 			buildSettings = {
 			};
 			name = Release;
@@ -191,7 +171,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AA0000000000000000000008 /* Build configuration list for PBXNativeTarget "HelloWorld" */ = {
+		AA0000000000000000000008 /* Build configuration list for PBXNativeTarget "Tool" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AA000000000000000000000B /* Debug */,
