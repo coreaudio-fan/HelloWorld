@@ -79,8 +79,10 @@ class GradeBook {
 
 	private var students: [Student] = []
 
-	// @escaping: the closure is stored and called after addStudent returns,
-	// so it must be marked escaping to allow capture beyond the call site.
+	// A stored property of function type is inherently escaping — it
+	// outlives any call that sets it, so @escaping does not apply here.
+	// The attribute marks function *parameters* that outlive the call,
+	// which is the distinction worth knowing.
 	var onStudentAdded: ((Student) -> Void)?
 
 	// @discardableResult: callers that don't need the returned Student
