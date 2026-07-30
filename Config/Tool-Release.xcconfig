@@ -1,0 +1,7 @@
+#include "Tool-Common.xcconfig"
+
+//	Apple Clang - Preprocessing
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) HELLOWORLD_RELEASE=1
+
+//	Swift Compiler - Custom Flags
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) HELLOWORLD_RELEASE
