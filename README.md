@@ -10,8 +10,8 @@ This project serves two purposes:
 
 | Language | Key constructs demonstrated |
 |---|---|
-| **C++** | Class with Rule of 6, `std::optional`, `std::function` callbacks, stored lambda, capture-by-value vs reference, mutable lambda, immediately invoked lambda, `std::format`, template function |
-| **Swift** | `enum` with raw values, associated values, and `CaseIterable`; `struct` vs `class`; `@escaping` closure; `[weak self]` capture; trailing closure syntax; `Result`; exhaustive `switch`; `@autoclosure` |
+| **C++** | Class following the Rule of 0, `std::optional`, `std::function` callbacks, stored lambda, capture-by-value vs reference, mutable lambda, immediately invoked lambda, `std::format`, structured bindings, ranges views with `std::accumulate`, designated initializers, `[[nodiscard]]` and `noexcept` |
+| **Swift** | `enum` with raw values, associated values, and `CaseIterable`; `struct` vs `class`; stored closure property; `[weak]` capture with `guard let`; trailing closure syntax; `Result`; exhaustive `switch`; `if case` pattern matching; `@autoclosure`; `@discardableResult` |
 
 ## Building and running
 

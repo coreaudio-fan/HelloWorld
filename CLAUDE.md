@@ -62,7 +62,7 @@ Each language has a single source/header pair containing both its `hello_*` func
 |---|---|
 | `main.swift` | Entry point — calls all `hello_*` and `run_demo_*` functions |
 | `HelloWorld.hpp` / `HelloWorld.cpp` | C++: `hello_cpp`, `run_demo_cpp`; private `Grade_Book` class, lambdas, `std::optional`, `std::format` |
-| `HelloWorld.swift` | Swift: `helloSwift`, `runDemoSwift`; enums, `GradeBook` class, closures, `Result`, `@escaping` |
+| `HelloWorld.swift` | Swift: `helloSwift`, `runDemoSwift`; enums, `GradeBook` class, closures, `Result`, `@autoclosure` |
 | `HelloWorld-Bridging-Header.h` | Exposes the C++ entry points to Swift |
 
 ### Adding files
